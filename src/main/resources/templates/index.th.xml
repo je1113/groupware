@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel=".main-container" th:object="${members}">
+        <attr sel="#search-form" th:action="@{/}" th:method="get"/>
+        <attr sel="#search-type" th:remove="all-but-first">
+            <attr sel="option[0]"
+                  th:each = "searchType : ${searchTypes}"
+                  th:value ="${searchType.name}"
+                  th:text = "${searchType.description}"
+                  th:selected ="${param.searchType !=null && (param.searchType.toString == searchType.name)}"/>
+        </attr>
+        <attr sel="tbody" th:remove="all-but-first">
+            <attr sel="tr[0]" th:each="member : ${members}">
+                <attr sel="td.idx" th:text="${member.idx}"/>
+                <attr sel="td.team" th:text="${member.team}"/>
+                <attr sel="td.name" th:text="${member.name}"/>
+                <attr sel="td.hp" th:text="${member.hp}"/>
+                <attr sel="td.email" th:text="${member.email}"/>
+                <!-- View, Delete 부분 -->
+                <attr sel=".dropdown">
+                    <attr sel="#edit_btn" th:onclick="'javascript:pop_member_edit(' + ${member.idx} + ');'"/>
+                    <attr sel="#delete_btn" th:onclick="'javascript:pop_member_delete(' + ${member.idx} + ');'"/>
+                </attr>
+            </attr>
+        </attr>
+        <attr sel=".pagination">
+            <attr sel="li[0]/a" th:text="'◀'"
+                  th:href="@{/(page=${members.number - 1}, searchKeyword=${param.searchKeyword})}"
+                  th:class="'page-link'+(${members.number}<=0 ? ' disabled' : '')"/>
+            <attr sel="li[1]" th:class="page-item" th:each="pageNumber : ${barNumbers}">
+                <attr sel="a" th:text="${pageNumber + 1}"
+                      th:href="@{/(page=${pageNumber}, searchKeyword=${param.searchKeyword})}"
+                      th:class="'page-link'+(${pageNumber}==${members.number} ? ' disabled' : '')"/>
+            </attr>
+            <attr sel="li[2]/a" th:text="'▶'"
+                  th:href="@{/(page=${members.number + 1}, searchKeyword=${param.searchKeyword})}"
+                  th:class="'page-link'+(${members.number}>=${members.totalPages -1} ? ' disabled' : '')"/>
+        </attr>
+    </attr>
+</thlogic>

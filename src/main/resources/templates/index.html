@@ -1,0 +1,165 @@
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org/">
+<!--head 시작 -->
+<div th:replace="fragment/adminhead :: head"></div>
+<!--head 끝 -->
+<body>
+<!-- header 시작 -->
+<div th:replace="fragment/adminheader :: header(${sessionInfo})"></div>
+<!-- header 끝 -->
+<!-- right-sidebar 시작 -->
+<div th:replace="fragment/adminrightsidebar :: rightsidebar"></div>
+<!-- right-sidebar 끝 -->
+<!-- left-side-bar 시작 -->
+<div th:replace="fragment/adminnavbar :: navbar"></div>
+<!-- left-side-bar 끝 -->
+<div class="main-container">
+  <div class="pd-ltr-20 xs-pd-20-10">
+    <div class="min-height-200px">
+
+      <!-- Simple Datatable start -->
+      <div class="card-box mb-30">
+        <div class="pd-20" id="top">
+          <h4 class="text-blue h4">직원 리스트</h4>
+          <button type="button" class="btn btn-primary m-t-15 waves-effect" onclick="pop_member_register()">직원 등록</button>
+          <!--번호/아이디/이름/전화번호/등록날짜-->
+        </div>
+        <div class="pb-20">
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <div class="dataTables_length" id="DataTables_Table_0_length">
+                <div style="display: flex;">
+                  <i class="icon-copy bi bi-card-list"></i>
+                  <p th:text="'직원 ' + ${members.totalElements} + '명'" style="margin-left: 10px;"></p>
+                </div>
+                <div style="display: flex;">
+                  <i class="icon-copy bi bi-book"></i>
+                  <p th:text="'총 ' + ${members.totalPages} + '페이지 중 ' + ${(members.number)+1} + '페이지'" style="margin-left: 10px;"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+<!--              <div id="DataTables_Table_0_filter" class="dataTables_filter" style="text-align: right;padding-left: 15px; padding-right: 15px;">-->
+<!--                <label style=" font-weight: normal; white-space: nowrap; text-align: left; display: flex; align-items: center; justify-content: flex-end;">search:-->
+<!--                  <input id="search_box" type="search" class="form-control form-control-sm" aria-controls="DataTables_Table_0" style="margin-left: 0.5em; width: auto;">-->
+<!--                </label>-->
+<!--              </div>-->
+              <form method="get" id="search-form">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="row no-gutters">
+                      <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                        <label for="search-type" hidden>검색 유형</label>
+                        <select class="form-control" id="search-type" name="searchType">
+                          <option>ID</option>
+                          <option>Position</option>
+                          <option>Name</option>
+                          <option>Hp</option>
+                          <option>Email</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-8 col-md-6 col-sm-12 p-0">
+                        <label for="search-value" hidden>검색어</label>
+                        <input type="text" placeholder="검색어..." class="form-control" id="search-value" name="searchValue">
+                      </div>
+                      <div class="col-lg-1 col-md-3 col-sm-12 p-0">
+                        <button type="submit" class="btn btn-base">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <table class="data-table table stripe hover nowrap">
+            <thead>
+            <tr>
+              <th>Id</th>
+              <th>group</th>
+              <th>Name</th>
+              <th>Hp</th>
+              <th>Email</th>
+              <th class="datatable-nosort">Action</th>
+            </tr>
+            </thead>
+            <tbody id="itemList">
+            <tr class="bg-pink">
+              <td class="idx">idx</td>
+              <td class="team">team</td>
+              <td class="name">name</td>
+              <td class="hp">hp</td>
+              <td class="email">email</td>
+              <td>
+                <div class="dropdown">
+                  <a
+                          class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
+                          href="#"
+                          role="button"
+                          data-toggle="dropdown"
+                  >
+                    <i class="dw dw-more"></i>
+                  </a>
+                  <div
+                          class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list"
+                  >
+
+                    <a class="dropdown-item edit" href="#" onclick="pop_member_edit()" id="edit_btn"
+                    ><i class="dw dw-edit2"></i> Edit</a
+                    >
+                    <a class="dropdown-item delete" href="#" onclick="pop_member_delete()" id="delete_btn"
+                    ><i class="dw dw-delete-3"></i> Delete</a
+                    >
+                  </div>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-sm-12 col-md-4"><div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div></div>
+            <div class="col-sm-12 col-md-7">
+              <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                <ul class="pagination" id="pageNum">
+                  <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">
+                    <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">
+                      <i class="ion-chevron-left"></i>
+                    </a>
+                  </li>
+                  <li class="paginate_button page-item active">
+                    <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                  </li>
+                  <li class="paginate_button page-item next disabled" id="DataTables_Table_0_next">
+                    <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">
+                      <i class="ion-chevron-right"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="member_layer/layer_member_register"></div>
+<div th:replace="member_layer/layer_member_edit"></div>
+<div th:replace="member_layer/pop_member_delete"></div>
+<!-- js -->
+<script src="/js/member_crud.js"></script>
+<div th:replace="fragment/adminjs :: js"></div>
+
+<script>
+
+
+</script>
+<!-- js -->
+
+</body>
+</html>
