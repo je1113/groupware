@@ -19,7 +19,15 @@ public class QProject extends EntityPathBase<Project> {
 
     public static final QProject project = new QProject("project");
 
+    public final DateTimePath<java.time.LocalDateTime> endDate = createDateTime("endDate", java.time.LocalDateTime.class);
+
     public final NumberPath<Long> idx = createNumber("idx", Long.class);
+
+    public final BooleanPath isUse = createBoolean("isUse");
+
+    public final StringPath name = createString("name");
+
+    public final DateTimePath<java.time.LocalDateTime> startDate = createDateTime("startDate", java.time.LocalDateTime.class);
 
     public QProject(String variable) {
         super(Project.class, forVariable(variable));

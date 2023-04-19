@@ -1,0 +1,30 @@
+/* 체크박스 꾸미기 - 활성화 x */
+input[class="check"] + label {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	border: 1px solid #bcbcbc;
+	cursor: pointer;
+}
+
+/* 체크박스 꾸미기 - 활성화 */
+input[class="check"]:checked + label {
+    background-image:url("../../img/check.png");
+    background-size: 100%;
+    border: 1px solid #fff;
+}
+
+/* input 안보이게 */
+.check{
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+.label_txt{
+    display: inline-block;
+    white-space: nowrap;
+    line-height: 18px;
+    padding-left: 25px;
+}
