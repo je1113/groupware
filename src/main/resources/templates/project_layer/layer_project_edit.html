@@ -16,31 +16,29 @@ d<link rel="stylesheet" href="/src/styles/layer.css">
         <div class="bottom">
             <div class="user_bind">
                 <div class="user_input">
-                    <div class="input_box" id="email_edit_input_box">
-                        <h4 class="input_title">이메일</h4>
-                        <div class="input_item"><input type="text" autocomplete="off" class="input_txt" id="email_edit_input"></div>
-                        <p class="input_error" id="email_edit_input_error"></p>
-                    </div>
-                    <div class="input_box" id="pw_edit_input_box">
-                        <h4 class="input_title">비밀번호</h4>
-                        <div class="input_item"><input type="password" autocomplete="off" class="input_txt" id="pw_edit_input"></div>
-                        <p class="input_error" id="pw_edit_input_error"></p>
-                    </div>
-
                     <div class="input_box" id="name_edit_input_box">
-                        <h4 class="input_title">이름</h4>
+                        <h4 class="input_title">프로젝트 이름</h4>
                         <div class="input_item"><input type="text" autocomplete="off" class="input_txt" id="name_edit_input"></div>
                         <p class="input_error" id="name_edit_input_error"></p>
                     </div>
-                    <div class="input_box" id="team_edit_input_box">
-                        <h4 class="input_title">그룹</h4>
-                        <div class="input_item"><input type="text"  autocomplete="off" class="input_txt" id="team_edit_input"></div>
-                        <p class="input_error" id="team_edit_input_error"></p>
+                    <div class="input_box">
+                        <h4 class="input_title">프로젝트 시작 날짜</h4>
+                        <div class="input_item">
+                            <input type="datetime-local" placeholder="프로젝트 시작 날짜" id="startDate_edit_input">
+                        </div>
                     </div>
-                    <div class="input_box" id="hp_edit_input_box">
-                        <h4 class="input_title">전화번호</h4>
-                        <div class="input_item"><input type="text" maxlength="13" oninput="autoHyphen(this)" autoclete="off" class="input_txt" id="hp_edit_input"></div>
-                        <p class="input_error" id="hp_edit_input_error"></p>
+                    <div class="input_box">
+                        <h4 class="input_title">프로젝트 종료 날짜</h4>
+                        <div class="input_item">
+                            <input type="datetime-local" placeholder="프로젝트 종료 날짜" id="endDate_edit_input">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="input_box">
+                        <input type="checkbox" name="check" id="edit_input" class="check">
+                        <label class="check_label" for="edit_input">
+                            <span  class="label_txt">사용 여부 체크</span>
+                        </label>
                     </div>
 
                 </div>

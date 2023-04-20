@@ -11,12 +11,12 @@
         </attr>
         <attr sel="tbody" th:remove="all-but-first">
             <attr sel="tr[0]" th:each="project : ${projects}">
-                <attr sel="td.idx" th:text="${project.idx}"/>
+<!--                <attr sel="td.idx" th:text="${project.idx}"/>-->
                 <attr sel="td.name" th:text="${project.name}"/>
                 <attr sel="td.start_date" th:datetime="${project.startDate}" th:text="${#temporals.format(project.startDate, 'yyyy/MM/dd')}"/>
                 <attr sel="td.end_date" th:datetime="${project.endDate}" th:text="${#temporals.format(project.endDate, 'yyyy/MM/dd')}"/>
 <!--                <attr sel="td.responsibility" th:text="담당자 목록"/>-->
-                <attr sel="td.is_use" th:text="${project.isUse}"/>
+                <attr sel="td.is_use" th:text="${project.isUse}? 'Y':'N'"/>
                 <!-- View, Delete 부분 -->
                 <attr sel=".dropdown">
                     <attr sel="#edit_btn" th:onclick="'javascript:pop_project_edit(' + ${project.idx} + ');'"/>

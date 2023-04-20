@@ -93,40 +93,39 @@ function pop_project_edit(idx){
     edit_idx=idx;
     document.querySelector(".layer_project_edit").style.display = "block";
     //기존 정보를 가져오기 위해 idx를 통해 데이터를 불러온다.
-    const edit_email =document.getElementById('email_edit_input')
-    const edit_pw =document.getElementById('pw_edit_input')
-    const edit_name =document.getElementById('name_edit_input')
-    const edit_team =document.getElementById('team_edit_input')
-    const edit_hp =document.getElementById('hp_edit_input')
+    const edit_name = document.getElementById('name_edit_input');
+    const edit_startDate = document.getElementById('startDate_edit_input');
+    const edit_endDate = document.getElementById('endDate_edit_input');
+    const edit_input = document.getElementById('edit_input');
     fetch('/api/project/'+idx)
         .then((response) => response.json())
         .then((data) => {
-            edit_email.value=data.email;
-//            edit_pw.value=data.pw;
             edit_name.value=data.name;
-            edit_team.value=data.team;
-            edit_hp.value=data.hp;
-            strEmail=data.email
-            strPw=data.pw
-            strName=data.name
-            strHp=data.hp
+            edit_startDate.value=data.startDate;
+            edit_endDate.value=data.endDate;
+            if(data.isUse){
+                edit_input.checked = true
+            }else{
+                edit_input.checked = false
+            }
         })
     const btn_edit = document.querySelector('.btn_edit');
-    btn_edit.addEventListener('click',editEvent);
+    btn_edit.addEventListener('click',edit_event);
 }
-function editEvent(){
+function edit_event(){
     send_edit(edit_idx)
 }
 function close_project_edit(){
+    $(".layer_project_edit .btn_edit").removeClass("active");
+    $(".layer_project_edit .btn_edit").addClass("disabled")
     document.querySelector(".layer_project_edit").style.display = "none";
 }
 function send_edit(idx) {
     //request로 필요한 DOM 객체 선택
-    const edit_email =document.getElementById('email_edit_input')
-    const edit_pw =document.getElementById('pw_edit_input')
-    const edit_name =document.getElementById('name_edit_input')
-    const edit_team =document.getElementById('team_edit_input')
-    const edit_hp =document.getElementById('hp_edit_input')
+    const edit_name = document.getElementById('name_edit_input');
+    const edit_startDate = document.getElementById('startDate_edit_input');
+    const edit_endDate = document.getElementById('endDate_edit_input');
+    const edit_input = document.getElementById('edit_input');
 
     fetch('/api/project/'+idx, {
         method: 'PUT',
@@ -137,11 +136,10 @@ function send_edit(idx) {
             "resultCode":"ok",
             "description":"정상",
             "data":{
-                "email" : edit_email.innerHTML,
-                "pw":`${edit_pw.value}`,
-                "name":`${edit_name.value}`,
-                "team":`${edit_team.value}`,
-                "hp":`${edit_hp.value}`
+                "name" : `${edit_name.value}`,
+                "startDate":`${edit_startDate.value}`,
+                "endDate":`${edit_endDate.value}`,
+                "isUse":`${edit_input.checked}`
             }
         }),
     })
@@ -158,42 +156,14 @@ function send_edit(idx) {
             alert(err);
         })
 }
-// 이메일 유효성 검사
-document.querySelector('#email_edit_input').addEventListener('input', e=>{
-    strEmail=e.target.value;
-    let errorMsg='';
-    if(!validateEmail(strEmail)){
-        errorMsg='영문과 숫자만 입력해주세요. (2-10자)';
-        document.querySelector('#email_edit_input_box').className='has_button input_box has_error';
-        document.querySelector('#email_edit_input').setAttribute('validateresult',false);
-    } else {
-        document.querySelector('#email_edit_input_box').className='has_button input_box fill';
-        document.querySelector('#email_edit_input').setAttribute('validateresult',true);
-    }
-    document.querySelector('#email_edit_input_error').innerHTML=errorMsg;
-});
 
-// 비밀번호 유효성 검사
-document.querySelector('#pw_edit_input').addEventListener('input', e=>{
-    strPw=e.target.value;
-    let errorMsg='';
-    if(!validatePw(strPw)){
-        errorMsg='영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)';
-        document.querySelector('#pw_edit_input_box').className='has_button input_box has_error';
-        document.querySelector('#pw_edit_input').setAttribute('validateresult',false);
-    } else {
-        document.querySelector('#pw_edit_input_box').className='has_button input_box fill';
-        document.querySelector('#pw_edit_input').setAttribute('validateresult',true);
-    }
-    document.querySelector('#pw_edit_input_error').innerHTML=errorMsg;
-});
-
+let edit_strName
 // 이름 유효성 검사
 document.querySelector('#name_edit_input').addEventListener('input', e=>{
-    strName=e.target.value;
+    edit_strName=e.target.value;
     let errorMsg='';
-    if(!validateName(strName)){
-        errorMsg='이름을 정확히 입력해주세요.(한글 2~6자)';
+    if(!validateName(edit_strName)){
+        errorMsg='2글자 이상 입력해주세요';
         document.querySelector('#name_edit_input_box').className='has_button input_box has_error';
         document.querySelector('#name_edit_input').setAttribute('validateresult',false);
     } else {
@@ -203,25 +173,13 @@ document.querySelector('#name_edit_input').addEventListener('input', e=>{
     document.querySelector('#name_edit_input_error').innerHTML=errorMsg;
 });
 
-// 휴대폰 번호 유효성 검사
-document.querySelector('#hp_edit_input').addEventListener('input', e=>{
-    strHp = e.target.value;
-    let errorMsg='';
-    if(!validateHp(strHp)){
-        errorMsg='휴대폰 번호를 정확히 입력해주세요.';
-        document.querySelector('#hp_edit_input_box').className='input_box has_error';
-        document.querySelector('#hp_edit_input').setAttribute('validateresult',false);
-    } else {
-        document.querySelector('#hp_edit_input_box').className='input_box fill';
-        document.querySelector('#hp_edit_input').setAttribute('validateresult',true);
-    }
-    document.querySelector('#hp_edit_input_error').innerHTML=errorMsg;
-});
-
 // 버튼 활성화
 
+
 function edit_btn_active(){
-    if((validateEmail(strEmail))&&(validatePw(strPw))&&(validateHp(strHp))&&(validateName(strName))){
+    const edit_startDate = document.getElementById('startDate_edit_input');
+    const edit_endDate = document.getElementById('endDate_edit_input');
+    if((validateName(edit_strName))&&(edit_startDate.value !='')&&(edit_endDate.value !='')){
         $(".layer_project_edit .btn_edit").addClass("active");
         $(".layer_project_edit .btn_edit").removeClass("disabled")
     }else{
@@ -229,10 +187,9 @@ function edit_btn_active(){
         $(".layer_project_edit .btn_edit").addClass("disabled")
     }
 }
-document.querySelector('#email_edit_input').addEventListener('input', edit_btn_active)
-document.querySelector('#pw_edit_input').addEventListener('input', edit_btn_active)
-document.querySelector('#name_edit_input').addEventListener('input', edit_btn_active )
-document.querySelector('#hp_edit_input').addEventListener('input', edit_btn_active)
+document.querySelector('#name_edit_input').addEventListener('input', edit_btn_active)
+document.querySelector('#startDate_edit_input').addEventListener('change', edit_btn_active)
+document.querySelector('#endDate_edit_input').addEventListener('change', edit_btn_active )
 
 
 ////관리자 조회👀👀👀👀👀👀👀👀
