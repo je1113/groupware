@@ -3,6 +3,7 @@ package com.infowise.demo.controller;
 import com.infowise.demo.Enum.MemberSearchType;
 import com.infowise.demo.Enum.ProjectSearchType;
 import com.infowise.demo.Service.MemberService;
+import com.infowise.demo.Service.PicService;
 import com.infowise.demo.Service.ProjectService;
 import com.infowise.demo.dto.MemberDTO;
 import com.infowise.demo.dto.ProjectDTO;
@@ -28,6 +29,7 @@ public class PageController {
 
     private final MemberService memberService;
     private final ProjectService projectService;
+    private final PicService picService;
 
     @PostMapping(path="loginOkYeah")   ///loginOk
     public String loginOk(HttpServletRequest request, String email, String pw){
@@ -94,6 +96,8 @@ public class PageController {
         List<Integer> barNumbers = IntStream.range(0, projects.getTotalPages()).boxed().toList();
         map.addAttribute("barNumbers",barNumbers);
         map.addAttribute("searchTypes", ProjectSearchType.values());
+        List<String> picNames = picService.picMemberNames(projects.stream().toList());
+        map.addAttribute("picNames",picNames);
         return"project";
     }
 
