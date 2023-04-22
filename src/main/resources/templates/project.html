@@ -110,12 +110,14 @@
                   <div
                           class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list"
                   >
-
+                    <a class="dropdown-item pic" href="#" onclick="pop_project_pic()" id="pic_btn"
+                    ><i class="icon-copy dw dw-add-user"></i> 담당자 등록</a
+                    >
                     <a class="dropdown-item edit" href="#" onclick="pop_project_edit()" id="edit_btn"
-                    ><i class="dw dw-edit2"></i> Edit</a
+                    ><i class="dw dw-edit2"></i> 수정</a
                     >
                     <a class="dropdown-item delete" href="#" onclick="pop_project_delete()" id="delete_btn"
-                    ><i class="dw dw-delete-3"></i> Delete</a
+                    ><i class="dw dw-delete-3"></i> 삭제</a
                     >
                   </div>
                 </div>
@@ -152,6 +154,7 @@
 </div>
 <div th:replace="project_layer/layer_project_register"></div>
 <div th:replace="project_layer/layer_project_edit"></div>
+<div th:replace="project_layer/layer_project_pic"></div>
 <div th:replace="project_layer/pop_project_delete"></div>
 <!-- js -->
 <script src="/js/project_crud.js"></script>

@@ -193,17 +193,17 @@ document.querySelector('#endDate_edit_input').addEventListener('change', edit_bt
 
 
 ////관리자 조회👀👀👀👀👀👀👀👀
-function pop_admin_view(idx){
+function pop_project_view(idx){
 
     fetch('/api/project/'+idx)
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
         })
-    document.querySelector(".layer_admin_view").style.display = "block";
+    document.querySelector(".layer_project_view").style.display = "block";
 }
-function close_admin_view(){
-    document.querySelector(".layer_admin_view").style.display = "none";
+function close_project_view(){
+    document.querySelector(".layer_project_view").style.display = "none";
 }
 
 ///삭제 시작!❗❗❌❌❌❗❗❌❌❌
@@ -232,6 +232,11 @@ function project_delete(idx){
             alert(err);
         })
 }
-function close_admin_delete(){
+function close_project_delete(){
     document.querySelector(".layer_project_delete").style.display = "none";
+}
+
+
+function pop_project_pic(){
+    document.querySelector(".layer_project_pic").style.display = "block";
 }
