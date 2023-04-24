@@ -5,6 +5,7 @@ import com.infowise.demo.Service.PicService;
 import com.infowise.demo.Service.ProjectService;
 import com.infowise.demo.dto.Header;
 import com.infowise.demo.dto.PicDTO;
+import com.infowise.demo.rep.PicRep;
 import com.infowise.demo.req.PicReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +24,9 @@ public class PicController {
         return picService.create(request.getData());
     }
 
-    // 이거 수정 필요!! rep을 만들어 이름을 출력하도록??
     @GetMapping("pic/{idx}")
-    public List<PicDTO> readMember (@PathVariable(name = "idx") Long idx){
-        return picService.projectPic(idx);
+    public List<PicRep> readMember (@PathVariable(name = "idx") Long idx){
+        return picService.projectPic(idx).stream().map(PicRep::fromDTO).toList();
     }
 
 

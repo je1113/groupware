@@ -14,7 +14,7 @@ function send_create() {
     const endDate = document.getElementById('endDate_input');
     const input0 = document.getElementById('input0');
 
-    fetch('/api/project', {
+    fetch('api/project', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -97,7 +97,7 @@ function pop_project_edit(idx){
     const edit_startDate = document.getElementById('startDate_edit_input');
     const edit_endDate = document.getElementById('endDate_edit_input');
     const edit_input = document.getElementById('edit_input');
-    fetch('/api/project/'+idx)
+    fetch('api/project/'+idx)
         .then((response) => response.json())
         .then((data) => {
             edit_name.value=data.name;
@@ -127,7 +127,7 @@ function send_edit(idx) {
     const edit_endDate = document.getElementById('endDate_edit_input');
     const edit_input = document.getElementById('edit_input');
 
-    fetch('/api/project/'+idx, {
+    fetch('api/project/'+idx, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -195,7 +195,7 @@ document.querySelector('#endDate_edit_input').addEventListener('change', edit_bt
 ////관리자 조회👀👀👀👀👀👀👀👀
 function pop_project_view(idx){
 
-    fetch('/api/project/'+idx)
+    fetch('api/project/'+idx)
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
@@ -209,7 +209,7 @@ function close_project_view(){
 ///삭제 시작!❗❗❌❌❌❗❗❌❌❌
 function pop_project_delete(idx){
     document.querySelector(".layer_project_delete").style.display = "block";
-    const btn_delete = document.querySelector('.btn_delete');
+    const btn_delete = document.querySelector('.layer_project_delete .btn_delete');
     btn_delete.addEventListener('click',()=>{
         project_delete(idx)
     });
@@ -237,6 +237,92 @@ function close_project_delete(){
 }
 
 
-function pop_project_pic(){
+let pic_idx; // 이벤트 이중으로 걸리지 안도록 익명함수를 회피하기 위함
+function pop_project_pic(project_idx){
+    pic_idx = project_idx;
     document.querySelector(".layer_project_pic").style.display = "block";
+    const project_name = document.querySelector(".layer_project_pic .project_name")
+    const project_period = document.querySelector(".layer_project_pic .project_period")
+    fetch('api/project/'+project_idx)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("project"+data)
+            project_name.innerHTML = data.name;
+            project_period.innerHTML = data.period;
+            pic_list(project_idx)
+        })
+    const btn_pic = document.querySelector('.btn_pic');
+//    btn_pic.addEventListener('click',);
+}
+
+async function pic_list(project_idx){
+    let picList="";
+    try{
+        const response = await fetch('api/pic/'+project_idx);
+        const data = await response.json();
+        console.log(data);
+        if(data.length ===0){
+            picList = `<p style="color:red; float: left;">아직 담당자가 등록되지 않았습니다.</p>`
+            document.querySelector("#pic_tbody").innerHTML=picList
+            return
+        }
+        data.forEach(pic=>{
+            picList+=`
+                <tr role="row">
+                    <td >
+                        <div class="name-avatar d-flex align-items-center">
+                            <div class="txt">
+                                <div class="weight-600">${pic.memberName}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${pic.memberGroup}</td>
+                    <td>
+                        <div class="table-actions" style="justify-content: space-evenly;">
+                            <a href="#" data-color="#e95959" onclick="pop_pic_delete(${pic.idx})" style="color: rgb(233, 89, 89);"><i class="icon-copy dw dw-delete-3"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            `
+        })
+        console.log(picList)
+        document.querySelector("#pic_tbody").innerHTML=picList
+    }catch(error){
+        console.log(error)
+    }
+
+}
+
+function close_project_pic(){
+    document.querySelector(".layer_project_pic").style.display = "none";
+}
+
+
+function pop_pic_delete(idx){
+    document.querySelector(".layer_pic_delete").style.display = "block";
+    const btn_delete = document.querySelector('.layer_pic_delete .btn_delete');
+    btn_delete.addEventListener('click',()=>{
+        pic_delete(idx)
+    });
+}
+function pic_delete(idx){
+    fetch('api/pic/'+idx, {
+        method: "DELETE",
+
+    })
+        .then((res) => {
+            pic_list(pic_idx)
+            close_pic_delete()
+            return;
+        })
+        .then((data) => {
+            console.log(data);
+            return;
+        })
+        .catch((err)=>{
+            alert(err);
+        })
+}
+function close_pic_delete(){
+    document.querySelector(".layer_pic_delete").style.display = "none";
 }

@@ -19,7 +19,7 @@
                     <div class="input_box" >
                         <h4 class="input_title">프로젝트 이름</h4>
                         <div class="input_item">
-                            <p class="project_name">sample</p>
+                            <p class="project_name" >sample</p>
                         </div>
                     </div>
                     <div class="input_box" >
@@ -30,20 +30,52 @@
                     </div>
                     <div class="input_box" >
                         <h4 class="input_title">담당자 추가/삭제</h4>
-                        <div class="input_item">
-                            <p class="name">sample</p>
+
+                        <div id=pics>
+                            <div class="col-sm-12">
+                                <table class="data-table table nowrap dataTable no-footer collapsed">
+<!--                                <thead>-->
+<!--                                <tr role="row">-->
+<!--                                    <th >Name</th>-->
+<!--                                    <th >Group</th>-->
+<!--                                    <th></th></tr>-->
+<!--                                </thead>-->
+                                <tbody id="pic_tbody">
+                                <tr role="row">
+                                    <td >
+                                        <div class="name-avatar d-flex align-items-center">
+<!--                                            <div class="avatar mr-2 flex-shrink-0">-->
+<!--                                                <img src="vendors/images/photo8.jpg" class="border-radius-100 shadow" width="40" height="40" alt="">-->
+<!--                                            </div>-->
+                                            <div class="txt">
+                                                <div class="weight-600">Christian Dyer</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Developer</td>
+                                    <td>
+                                        <div class="table-actions" style="justify-content: space-evenly;">
+                                            <a href="#" data-color="#e95959" style="color: rgb(233, 89, 89);"><i class="icon-copy dw dw-delete-3"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table></div>
                         </div>
-                        <div class="input_item">
-                            <input type="text" autocomplete="off" class="input_txt" id="pic_input">
+                        <div id="form-picInfo">
+
+                            <br>
+                            <input id="pic-input" placeholder="담당자 이름을 입력하여 추가">
+                            <button id="pic_submit" style="float:right " class="btn btn-sm btn-dark small btn_pic">등록</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="layer_btn">
-            <a href="#" class="btn outlinegrey medium" onclick="close_project_pic()"> 취소 </a>
-        </div>
+<!--        <div class="layer_btn">-->
+<!--            <a href="#" class="btn outlinegrey medium" onclick="close_project_pic()"> 취소 </a>-->
+<!--        </div>-->
         </div>
     </div>
 </div>
