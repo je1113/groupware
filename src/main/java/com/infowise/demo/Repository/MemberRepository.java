@@ -13,6 +13,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Page<Member> findByNameContaining(String name, Pageable pageable);
     Page<Member> findByTeam(String group, Pageable pageable);
 
+    Optional<Member> findByName(String name);
+
     //로그인용
     Optional<Member> findByEmailAndPw(String email, String pw);
 

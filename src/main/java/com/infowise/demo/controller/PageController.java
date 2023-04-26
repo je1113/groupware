@@ -1,8 +1,12 @@
 package com.infowise.demo.controller;
 
 import com.infowise.demo.Enum.MemberSearchType;
+import com.infowise.demo.Enum.ProjectSearchType;
 import com.infowise.demo.Service.MemberService;
+import com.infowise.demo.Service.PicService;
+import com.infowise.demo.Service.ProjectService;
 import com.infowise.demo.dto.MemberDTO;
+import com.infowise.demo.dto.ProjectDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,10 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,8 @@ import java.util.stream.IntStream;
 public class PageController {
 
     private final MemberService memberService;
-
+    private final ProjectService projectService;
+    private final PicService picService;
 
     @PostMapping(path="loginOkYeah")   ///loginOk
     public String loginOk(HttpServletRequest request, String email, String pw){
@@ -71,7 +73,7 @@ public class PageController {
 
     @GetMapping(path="")
     public String member(HttpServletRequest request, ModelMap map,
-                        @PageableDefault(size = 10, sort = "idx", direction = Sort.Direction.ASC) Pageable pageable,
+                        @PageableDefault(size = 10, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(required = false) MemberSearchType searchType,
                         @RequestParam(required = false) String searchValue){
 //        String session = sessionCheck(request);
@@ -83,4 +85,20 @@ public class PageController {
         map.addAttribute("searchTypes", MemberSearchType.values());
         return"index";
     }
+
+    @GetMapping("project")
+    public String project(HttpServletRequest request, ModelMap map,
+                          @PageableDefault(size = 10, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
+                          @RequestParam(required = false) ProjectSearchType searchType,
+                          @RequestParam(required = false) String searchValue){
+        Page<ProjectDTO> projects = projectService.searchProject(searchType, searchValue, pageable);
+        map.addAttribute("projects", projects);
+        List<Integer> barNumbers = IntStream.range(0, projects.getTotalPages()).boxed().toList();
+        map.addAttribute("barNumbers",barNumbers);
+        map.addAttribute("searchTypes", ProjectSearchType.values());
+        List<String> picNames = picService.picMemberNames(projects.stream().toList());
+        map.addAttribute("picNames",picNames);
+        return"project";
+    }
+
 }

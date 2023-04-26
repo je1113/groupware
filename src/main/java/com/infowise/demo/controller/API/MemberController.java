@@ -13,7 +13,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("member")
+    @PostMapping("member") //http://localhost:8989/api/member
     public Header<MemberDTO> create(@RequestBody Header<MemberDTO> request){
         System.out.println(request+"직원 등록 😊");
         return memberService.create(request.getData());

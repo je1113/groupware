@@ -337,17 +337,17 @@ document.querySelector('#hp_edit_input').addEventListener('input', edit_btn_acti
 
 
 ////관리자 조회👀👀👀👀👀👀👀👀
-function pop_admin_view(idx){
+function pop_member_view(idx){
 
     fetch('/api/member/'+idx)
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
         })
-    document.querySelector(".layer_admin_view").style.display = "block";
+    document.querySelector(".layer_member_view").style.display = "block";
 }
-function close_admin_view(){
-    document.querySelector(".layer_admin_view").style.display = "none";
+function close_member_view(){
+    document.querySelector(".layer_member_view").style.display = "none";
 }
 
 ///삭제 시작!❗❗❌❌❌❗❗❌❌❌
@@ -376,6 +376,6 @@ function member_delete(idx){
             alert(err);
         })
 }
-function close_admin_delete(){
+function close_member_delete(){
     document.querySelector(".layer_member_delete").style.display = "none";
 }

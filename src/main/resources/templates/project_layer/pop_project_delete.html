@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="/src/styles/pop_delete.css">
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="project_delete" class="layer_project_delete pop layer lg" style="display: none;">
+    <div class="layer_container" style="height: auto">
+        <a href="#" class="btn_layer_close" onclick="close_project_delete()">
+            <div>
+                <img src="/img/close_white.png">
+            </div>
+        </a>
+
+        <div class="layer_header">
+            <h2 class="title"> 프로젝트 삭제 </h2>
+        </div>
+        <div class="layer_content">
+        <div class="top">
+            <div class="user_bind">
+                <div class="user_input">
+                    <div class="input_box ">
+                        <h4 class="input_title" style="color: red; padding-bottom:20px">경고</h4>
+                        <div class="input_item">
+                            <p>해당 프로젝트를 <span style="color:red">삭제</span> 하시겠습니까?</p>
+
+                        </div>
+
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="layer_btn">
+            <a class="btn btn_delete solid medium" >확인</a>
+            <a class="btn solid medium" onclick="close_project_delete()"> 취소 </a>
+        </div>
+        </div>
+    </div>
+</div>

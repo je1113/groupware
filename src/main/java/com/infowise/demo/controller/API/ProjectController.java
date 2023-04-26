@@ -4,6 +4,7 @@ package com.infowise.demo.controller.API;
 import com.infowise.demo.Service.ProjectService;
 import com.infowise.demo.dto.Header;
 import com.infowise.demo.dto.ProjectDTO;
+import com.infowise.demo.rep.ProjectRep;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class ProjectController {
     }
 
     @GetMapping("project/{idx}")
-    public ProjectDTO read(@PathVariable(name="idx") Long idx) {return projectService.read(idx);}
+    public ProjectRep read(@PathVariable(name="idx") Long idx) {return ProjectRep.fromDTO(projectService.read(idx));}
 
 
     @PutMapping("project/{idx}")

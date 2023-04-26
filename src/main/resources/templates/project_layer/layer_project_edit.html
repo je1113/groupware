@@ -1,0 +1,56 @@
+d<link rel="stylesheet" href="/src/styles/layer.css">
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="project_edit" class="layer_project_edit layer lg" style="display: none;" >
+    <div class="layer_container" style="height: auto">
+        <a onclick="close_project_edit()" class="btn_layer_close">
+            <div>
+                <img src="/img/close_white.png">
+            </div>
+        </a>
+        <div class="layer_header">
+            <h2 class="title"> 프로젝트 수정페이지 </h2>
+        </div>
+        <div class="layer_content">
+        <div class="bottom">
+            <div class="user_bind">
+                <div class="user_input">
+                    <div class="input_box" id="name_edit_input_box">
+                        <h4 class="input_title">프로젝트 이름</h4>
+                        <div class="input_item">
+                            <input type="text" autocomplete="off" class="input_txt" id="name_edit_input">
+                        </div>
+                        <p class="input_error" id="name_edit_input_error"></p>
+                    </div>
+                    <div class="input_box">
+                        <h4 class="input_title">프로젝트 시작 날짜</h4>
+                        <div class="input_item">
+                            <input type="datetime-local" placeholder="프로젝트 시작 날짜" id="startDate_edit_input">
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <h4 class="input_title">프로젝트 종료 날짜</h4>
+                        <div class="input_item">
+                            <input type="datetime-local" placeholder="프로젝트 종료 날짜" id="endDate_edit_input">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="input_box">
+                        <input type="checkbox" name="check" id="edit_input" class="check">
+                        <label class="check_label" for="edit_input">
+                            <span  class="label_txt">사용 여부 체크</span>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="layer_btn">
+            <a href="#" class="btn outlinegrey medium" onclick="close_project_edit()"> 취소 </a>
+            <a disabled="disabled" href="#" class="btn btn_edit solid medium disabled" >수정</a>
+        </div>
+        </div>
+    </div>
+</div>

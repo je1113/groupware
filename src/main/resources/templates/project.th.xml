@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel=".main-container" th:object="${projects}">
+        <attr sel="#search-form" th:action="@{/project}" th:method="get"/>
+        <attr sel="#search-type" th:remove="all-but-first">
+            <attr sel="option[0]"
+                  th:each = "searchType : ${searchTypes}"
+                  th:value ="${searchType.name}"
+                  th:text = "${searchType.description}"
+                  th:selected ="${param.searchType !=null && (param.searchType.toString == searchType.name)}"/>
+        </attr>
+        <attr sel="tbody" th:remove="all-but-first">
+            <attr sel="tr[0]" th:each="project, i : ${projects}">
+<!--                <attr sel="td.idx" th:text="${project.idx}"/>-->
+                <attr sel="td.name" th:text="${project.name}"/>
+                <attr sel="td.pic" th:text="${picNames[i.index]}"/>
+                <attr sel="td.start_date" th:datetime="${project.startDate}" th:text="${#temporals.format(project.startDate, 'yy/MM/dd')}"/>
+                <attr sel="td.end_date" th:datetime="${project.endDate}" th:text="${#temporals.format(project.endDate, 'yy/MM/dd')}"/>
+                <attr sel="td.is_use" th:text="${project.isUse}? 'Y':'N'"/>
+                <!-- View, Delete 부분 -->
+                <attr sel=".dropdown">
+                    <attr sel="#pic_btn" th:onclick="'javascript:pop_project_pic(' + ${project.idx} + ');'"/>
+                    <attr sel="#edit_btn" th:onclick="'javascript:pop_project_edit(' + ${project.idx} + ');'"/>
+                    <attr sel="#delete_btn" th:onclick="'javascript:pop_project_delete(' + ${project.idx} + ');'"/>
+                </attr>
+            </attr>
+        </attr>
+        <attr sel=".pagination">
+            <attr sel="li[0]/a" th:text="'◀'"
+                  th:href="@{/project(page=${projects.number - 1}, searchKeyword=${param.searchKeyword})}"
+                  th:class="'page-link'+(${projects.number}<=0 ? ' disabled' : '')"/>
+            <attr sel="li[1]" th:class="page-item" th:each="pageNumber : ${barNumbers}">
+                <attr sel="a" th:text="${pageNumber + 1}"
+                      th:href="@{/project(page=${pageNumber}, searchKeyword=${param.searchKeyword})}"
+                      th:class="'page-link'+(${pageNumber}==${projects.number} ? ' disabled' : '')"/>
+            </attr>
+            <attr sel="li[2]/a" th:text="'▶'"
+                  th:href="@{/project(page=${projects.number + 1}, searchKeyword=${param.searchKeyword})}"
+                  th:class="'page-link'+(${projects.number}>=${projects.totalPages -1} ? ' disabled' : '')"/>
+        </attr>
+    </attr>
+</thlogic>
