@@ -4,10 +4,15 @@ import com.infowise.demo.dto.MemberDTO;
 import com.infowise.demo.dto.PicDTO;
 import com.infowise.demo.dto.ProjectDTO;
 
-public record PicReq(Long memberIdx, Long projectIdx) {
+public record PicReq(
+        Long memberIdx,
+        String memberName,
+        Long projectIdx
 
-    public static PicReq of( Long memberIdx, Long projectIdx){
-        return new PicReq(memberIdx, projectIdx);
+) {
+
+    public static PicReq of( Long memberIdx, String memberName, Long projectIdx){
+        return new PicReq(memberIdx, memberName, projectIdx);
     }
 
     public PicDTO toDto(MemberDTO memberDTO, ProjectDTO projectDTO){

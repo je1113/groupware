@@ -192,7 +192,7 @@ document.querySelector('#startDate_edit_input').addEventListener('change', edit_
 document.querySelector('#endDate_edit_input').addEventListener('change', edit_btn_active )
 
 
-////관리자 조회👀👀👀👀👀👀👀👀
+// 조회👀👀👀👀👀👀👀👀
 function pop_project_view(idx){
 
     fetch('api/project/'+idx)
@@ -236,10 +236,10 @@ function close_project_delete(){
     document.querySelector(".layer_project_delete").style.display = "none";
 }
 
-
-let pic_idx; // 이벤트 이중으로 걸리지 안도록 익명함수를 회피하기 위함
+//PIC 리스트 레이어📜📜📜
+let project_id; // 이벤트 이중으로 걸리지 안도록 익명함수를 회피하기 위함
 function pop_project_pic(project_idx){
-    pic_idx = project_idx;
+    project_id = project_idx;
     document.querySelector(".layer_project_pic").style.display = "block";
     const project_name = document.querySelector(".layer_project_pic .project_name")
     const project_period = document.querySelector(".layer_project_pic .project_period")
@@ -252,7 +252,15 @@ function pop_project_pic(project_idx){
             pic_list(project_idx)
         })
     const btn_pic = document.querySelector('.btn_pic');
-//    btn_pic.addEventListener('click',);
+    const pic_input = document.querySelector('#pic_input')
+    pic_input.addEventListener("keypress",function(event){
+        if(event.key === "Enter"){
+        event.preventDefault();
+        send_pic()
+        }
+    })
+    btn_pic.addEventListener('click',send_pic);
+
 }
 
 async function pic_list(project_idx){
@@ -295,6 +303,7 @@ async function pic_list(project_idx){
 
 function close_project_pic(){
     document.querySelector(".layer_project_pic").style.display = "none";
+    location.reload()
 }
 
 
@@ -311,7 +320,7 @@ function pic_delete(idx){
 
     })
         .then((res) => {
-            pic_list(pic_idx)
+            pic_list(project_id)
             close_pic_delete()
             return;
         })
@@ -326,3 +335,40 @@ function pic_delete(idx){
 function close_pic_delete(){
     document.querySelector(".layer_pic_delete").style.display = "none";
 }
+
+//✨✨pic 등록
+
+function send_pic() {
+    //request로 필요한 DOM 객체 선택
+    const pic_input = document.getElementById('pic_input');
+
+    fetch('api/pic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            //우리가 만든데이터
+            "transaction_time":`${new Date()}`,
+            "resultCode":"ok",
+            "description":"정상",
+            "data":{
+                "memberName":`${pic_input.value}`,
+                "projectIdx":`${project_id}`
+            }
+        }),
+    })
+        .then((res) => {
+            pic_list(project_id)
+            close_pic_delete()
+            pic_input.value = '';
+            return; //리턴을 걸어서 진행하는 것을 막는다!
+        })
+        .then((data) => {
+            console.log(data);
+            return;
+        })
+        .catch((err)=>{
+            alert(err);
+        })
+}
+
+//pic_submit에 enter적용하도록 하는 법

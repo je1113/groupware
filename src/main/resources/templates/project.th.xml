@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <thlogic>
     <attr sel=".main-container" th:object="${projects}">
-        <attr sel="#search-form" th:action="@{/}" th:method="get"/>
+        <attr sel="#search-form" th:action="@{/project}" th:method="get"/>
         <attr sel="#search-type" th:remove="all-but-first">
             <attr sel="option[0]"
                   th:each = "searchType : ${searchTypes}"

@@ -62,10 +62,19 @@ public class PicService {
 
     // 담당정보 등록
     public Header<Pic> create(PicReq picReq){
-        Member member = memberRepository.findById(picReq.memberIdx()).get();
-        Project project = projectRepository.findById(picReq.projectIdx()).get();
-        Pic newPic = picRepository.save(Pic.of(member,project));
-        return Header.OK(newPic);
+        Optional<Member> member = memberRepository.findByName(picReq.memberName());
+        if(member.isPresent()){
+            Project project = projectRepository.findById(picReq.projectIdx()).get();
+            if(picRepository.existsByMemberAndProject(member.get(),project)==Boolean.FALSE){
+                Pic newPic = picRepository.save(Pic.of(member.get(),project));
+                return Header.OK(newPic);
+            }
+            return Header.ERROR("이미 등록된 담당정보입니다.");
+
+        }else{
+            return Header.ERROR("해당 직원을 찾을 수 없습니다.");
+        }
+
     }
 
     public Header delete(Long idx){

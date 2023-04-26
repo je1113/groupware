@@ -24,7 +24,7 @@ public class QPic extends EntityPathBase<Pic> {
 
     public final NumberPath<Long> idx = createNumber("idx", Long.class);
 
-    public final QMember Member;
+    public final QMember member;
 
     public final QProject project;
 
@@ -46,7 +46,7 @@ public class QPic extends EntityPathBase<Pic> {
 
     public QPic(Class<? extends Pic> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.Member = inits.isInitialized("Member") ? new QMember(forProperty("Member")) : null;
+        this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
         this.project = inits.isInitialized("project") ? new QProject(forProperty("project")) : null;
     }
 

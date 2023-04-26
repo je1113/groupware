@@ -12,13 +12,13 @@ import javax.persistence.*;
 public class Pic {
     //PIC = person in charge = 담당자
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long idx;
-    @ManyToOne @JoinColumn(name="member_idx") Member Member;
+    @ManyToOne @JoinColumn(name="member_idx") Member member;
     @ManyToOne @JoinColumn(name="project_idx") Project project;
 
     protected Pic(){}
 
     private Pic( Member Member, Project project){
-        this.Member=Member;
+        this.member=Member;
         this.project=project;
     }
 
