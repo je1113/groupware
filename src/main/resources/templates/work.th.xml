@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel=".main-container" th:object="${works}">
+        <attr sel="#search-form" th:action="@{/work}" th:method="get"/>
+        <attr sel="#search-type" th:remove="all-but-first">
+            <attr sel="option[0]"
+                  th:each = "searchType : ${searchTypes}"
+                  th:value ="${searchType.name}"
+                  th:text = "${searchType.description}"
+                  th:selected ="${param.searchType !=null && (param.searchType.toString == searchType.name)}"/>
+        </attr>
+        <attr sel="tbody" th:remove="all-but-first">
+            <attr sel="tr[0]" th:each="work: ${works}">
+                <attr sel="td.member_name" th:text="${work.memberName}"/>
+                <attr sel="td.cost_type" th:text="${work.costType}"/>
+                <attr sel="td.project_name" th:text="${work.projectName}"/>
+                <attr sel="td.project_period" th:text="${work.projectPeriod}"/>
+                <attr sel="td.year" th:text="${work.year}"/>
+                <attr sel="td.month" th:text="${work.month}"/>
+                <attr sel="td.week" th:text="${work.week}"/>
+                <attr sel="td.gong_soo" th:text="${work.gongSoo}"/>
+                <!-- View, Delete 부분 -->
+                <attr sel=".dropdown">
+                    <attr sel="#edit_btn" th:onclick="'javascript:pop_work_edit(' + ${work.idx} + ');'"/>
+                    <attr sel="#delete_btn" th:onclick="'javascript:pop_work_delete(' + ${work.idx} + ');'"/>
+                </attr>
+            </attr>
+        </attr>
+        <attr sel=".pagination">
+            <attr sel="li[0]/a" th:text="'◀'"
+                  th:href="@{/work(page=${works.number - 1}, searchKeyword=${param.searchKeyword})}"
+                  th:class="'page-link'+(${works.number}<=0 ? ' disabled' : '')"/>
+            <attr sel="li[1]" th:class="page-item" th:each="pageNumber : ${barNumbers}">
+                <attr sel="a" th:text="${pageNumber + 1}"
+                      th:href="@{/work(page=${pageNumber}, searchKeyword=${param.searchKeyword})}"
+                      th:class="'page-link'+(${pageNumber}==${works.number} ? ' disabled' : '')"/>
+            </attr>
+            <attr sel="li[2]/a" th:text="'▶'"
+                  th:href="@{/work(page=${works.number + 1}, searchKeyword=${param.searchKeyword})}"
+                  th:class="'page-link'+(${works.number}>=${works.totalPages -1} ? ' disabled' : '')"/>
+        </attr>
+    </attr>
+</thlogic>

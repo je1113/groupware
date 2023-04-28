@@ -2,11 +2,15 @@ package com.infowise.demo.controller;
 
 import com.infowise.demo.Enum.MemberSearchType;
 import com.infowise.demo.Enum.ProjectSearchType;
+import com.infowise.demo.Enum.WorkSearchType;
 import com.infowise.demo.Service.MemberService;
 import com.infowise.demo.Service.PicService;
 import com.infowise.demo.Service.ProjectService;
+import com.infowise.demo.Service.WorkService;
 import com.infowise.demo.dto.MemberDTO;
 import com.infowise.demo.dto.ProjectDTO;
+import com.infowise.demo.dto.WorkDTO;
+import com.infowise.demo.rep.WorkRep;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +34,7 @@ public class PageController {
     private final MemberService memberService;
     private final ProjectService projectService;
     private final PicService picService;
+    private final WorkService workService;
 
     @PostMapping(path="loginOkYeah")   ///loginOk
     public String loginOk(HttpServletRequest request, String email, String pw){
@@ -101,4 +106,17 @@ public class PageController {
         return"project";
     }
 
-}
+    @GetMapping("work")
+    public String work(HttpServletRequest request, ModelMap map,
+                          @PageableDefault(size = 10, sort = {"year", "month", "week","member", "project"}, direction = Sort.Direction.DESC) Pageable pageable,
+                          @RequestParam(required = false) WorkSearchType searchType,
+                          @RequestParam(required = false) String searchValue){
+        Page<WorkRep> works = workService.searchWork(searchType,searchValue,pageable).map(WorkRep::fromDTO);
+        map.addAttribute("works", works);
+        List<Integer> barNumbers = IntStream.range(0, works.getTotalPages()).boxed().toList();
+        map.addAttribute("barNumbers",barNumbers);
+        map.addAttribute("searchTypes", ProjectSearchType.values());
+        return "work";
+    }
+
+    }

@@ -32,7 +32,7 @@ public class MemberService {
             return memberRepository.findAll(pageable).map(MemberDTO::fromEntity);
         }
         return switch (searchType){
-            case Email -> memberRepository.findByEmailContaining(searchKeyword, pageable).map(MemberDTO::fromEntity);
+            case EMAIL -> memberRepository.findByEmailContaining(searchKeyword, pageable).map(MemberDTO::fromEntity);
             case NAME -> memberRepository.findByNameContaining(searchKeyword, pageable).map(MemberDTO::fromEntity);
             case TEAM -> memberRepository.findByTeam(searchKeyword, pageable).map(MemberDTO::fromEntity);
         };
