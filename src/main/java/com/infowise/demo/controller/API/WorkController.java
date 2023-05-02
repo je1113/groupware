@@ -1,9 +1,14 @@
 package com.infowise.demo.controller.API;
 
+import com.infowise.demo.Service.MemberService;
+import com.infowise.demo.Service.PicService;
 import com.infowise.demo.Service.WorkService;
 import com.infowise.demo.dto.Header;
+import com.infowise.demo.dto.MemberDTO;
+import com.infowise.demo.dto.ProjectDTO;
 import com.infowise.demo.dto.WorkDTO;
 import com.infowise.demo.rep.WorkRep;
+import com.infowise.demo.req.WorkReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +20,12 @@ import java.util.List;
 public class WorkController {
 
     private final WorkService workService;
-
+    private final MemberService memberService;
+    private final PicService picService;
     @PostMapping("work")
-    public Header<WorkDTO> create(@RequestBody Header<WorkDTO> request){
-        System.out.println(request+"공수등록");
-        return workService.create(request.getData());
+    public List<Header<WorkDTO>> create(@RequestBody List<WorkReq> requests){
+        MemberDTO memberDTO = memberService.read(3L);
+        return workService.createBulk(requests,memberDTO);
     }
 
     @GetMapping("work/{idx}")

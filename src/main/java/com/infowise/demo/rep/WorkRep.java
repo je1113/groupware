@@ -17,6 +17,7 @@ public record WorkRep(
 ) {
     public static WorkRep fromDTO(WorkDTO dto){
         String period;
+
         period = dto.projectDTO().startDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"))
                 + " ~ " + dto.projectDTO().endDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
         return new WorkRep(dto.idx(), dto.memberDTO().name(),

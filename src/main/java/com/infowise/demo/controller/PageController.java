@@ -115,7 +115,7 @@ public class PageController {
         map.addAttribute("works", works);
         List<Integer> barNumbers = IntStream.range(0, works.getTotalPages()).boxed().toList();
         map.addAttribute("barNumbers",barNumbers);
-        map.addAttribute("searchTypes", ProjectSearchType.values());
+        map.addAttribute("searchTypes", WorkSearchType.values());
         return "work";
     }
 

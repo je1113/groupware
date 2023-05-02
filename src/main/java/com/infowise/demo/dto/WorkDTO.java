@@ -4,6 +4,7 @@ import com.infowise.demo.Entity.Member;
 import com.infowise.demo.Entity.Project;
 import com.infowise.demo.Entity.Work;
 import com.infowise.demo.Enum.CostType;
+import com.infowise.demo.req.WorkReq;
 
 import java.time.LocalDate;
 
@@ -27,4 +28,5 @@ public record WorkDTO(Long idx, MemberDTO memberDTO, ProjectDTO projectDTO, Cost
     public Work toEntity(Member member, Project project){
         return Work.of(member, project, costType, gongSoo, year, month, week, date);
     }
+
 }

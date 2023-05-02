@@ -28,6 +28,10 @@ public class PicController {
     public List<PicRep> readMember (@PathVariable(name = "idx") Long idx){
         return picService.projectPic(idx).stream().map(PicRep::fromDTO).toList();
     }
+    @GetMapping("pic/member")
+    public List<PicRep> readProject (){
+        return picService.memberPic(3L).stream().map(PicRep::fromDTO).toList();
+    }
 
 
     @DeleteMapping("pic/{idx}")

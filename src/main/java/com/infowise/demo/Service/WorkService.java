@@ -8,7 +8,10 @@ import com.infowise.demo.Repository.MemberRepository;
 import com.infowise.demo.Repository.ProjectRepository;
 import com.infowise.demo.Repository.WorkRepository;
 import com.infowise.demo.dto.Header;
+import com.infowise.demo.dto.MemberDTO;
+import com.infowise.demo.dto.ProjectDTO;
 import com.infowise.demo.dto.WorkDTO;
+import com.infowise.demo.req.WorkReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -68,10 +71,10 @@ public class WorkService {
         return Header.OK(WorkDTO.fromEntity(newWork));
     }
 
-    public List<Header<WorkDTO>> createBulk(List<WorkDTO> dtoList){
+    public List<Header<WorkDTO>> createBulk(List<WorkReq> reqList, MemberDTO memberDTO){
         List<Header<WorkDTO>> headers = new ArrayList<>();
-        dtoList.forEach(
-                workDTO -> headers.add(create(workDTO))
+        reqList.forEach(
+                workReq -> headers.add(create(workReq.toDto(memberDTO)))
         );
         return headers;
     }

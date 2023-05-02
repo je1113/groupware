@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="/src/styles/layer.css">
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="work_register" class="layer_work_register layer lg" style="display: none;">
+    <div class="layer_container" style="height: auto">
+        <a onclick="close_work_register()" class="btn_layer_close" >
+            <div>
+                <img src="/img/close_white.png">
+            </div>
+        </a>
+        <div class="layer_header">
+            <h2 class="title"> 공수 등록페이지 </h2>
+        </div>
+        <div class="layer_content">
+        <div class="bottom">
+            <div class="user_bind" id="pic_list">
+                <div class="input_box" id="name_input_box" style="display: flex; align-items: center;">
+                    <h4 class="input_title" style=" margin-right: 10px; width: 100%;">프로젝트 이름</h4>
+                    <input type="number" autocomplete="off" placeholder="공수를 입력해주세요" class="form-control register_input" >
+                </div>
+            </div>
+
+        </div>
+
+        <div class="layer_btn">
+            <a href="#" class="btn outlinegrey medium" onclick="close_work_register()"> 취소 </a>
+            <a href="#" class="btn btn_save solid medium disabled" > 생성 </a>
+        </div>
+        </div>
+    </div>
+</div>
