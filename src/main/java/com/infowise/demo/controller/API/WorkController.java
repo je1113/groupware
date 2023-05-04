@@ -48,6 +48,9 @@ public class WorkController {
     @DeleteMapping("work/{idx}")
     public Header delete(@PathVariable(name="idx")Long idx){return workService.delete(idx);}
 
+    @DeleteMapping("work")
+    public List<Header<WorkDTO>> deleteBulk(@RequestBody List<WorkDTO> request){return workService.deleteBulk(request);}
+
     @GetMapping("work/{year}/{month}/{week}")
     public List<WorkDTO> check(@PathVariable(name="year")Integer year,
                                @PathVariable(name="month")Integer month,

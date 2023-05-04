@@ -40,7 +40,7 @@ public class PicService {
     @Transactional(readOnly = true)
     public List<PicDTO> memberPic(Long memberIdx){
         Member member = memberRepository.findById(memberIdx).get();
-        return picRepository.findAllByMember(member)
+        return picRepository.findAllByMemberAndProject_IsUse(member,Boolean.TRUE)
                 .stream().map(PicDTO::fromEntity).toList();
     }
 

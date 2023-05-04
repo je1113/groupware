@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="/src/styles/layer.css">
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="work_delete_list" class="layer_work_delete_list layer lg" style="display: none;">
+    <div class="layer_container" style="height: auto">
+        <a onclick="close_work_delete_list()" class="btn_layer_close" >
+            <div>
+                <img src="/img/close_white.png">
+            </div>
+        </a>
+        <div class="layer_header">
+            <h2 class="title"> 공수 삭제페이지 </h2>
+        </div>
+        <div class="layer_content">
+        <div class="bottom">
+            <div class="user_bind" id="pic_delete_list">
+
+            </div>
+        </div>
+
+        <div class="layer_btn">
+            <a href="#" class="btn outlinegrey medium" onclick="close_work_delete_list()"> 취소 </a>
+            <a href="#" class="btn btn_delete_all solid medium" onclick="" > 모두 삭제 </a>
+        </div>
+        </div>
+    </div>
+</div>

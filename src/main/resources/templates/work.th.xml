@@ -22,7 +22,7 @@
                 <!-- View, Delete 부분 -->
                 <attr sel=".dropdown">
                     <attr sel="#edit_btn" th:onclick="'javascript:pop_work_edit(' + ${work.idx} + ');'"/>
-                    <attr sel="#delete_btn" th:onclick="'javascript:pop_work_delete(' + ${work.idx} + ');'"/>
+                    <attr sel="#delete_btn" th:onclick="'javascript:pop_work_delete_list(' + ${work.idx} + ');'"/>
                 </attr>
             </attr>
         </attr>

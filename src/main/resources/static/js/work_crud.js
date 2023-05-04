@@ -266,3 +266,94 @@ function edit_work(){
       });
 
 }
+/**
+삭제기능 시작!
+*/
+function pop_work_delete_list(idx){
+    document.querySelector(".layer_work_delete_list").style.display="block"
+    work_delete_list(idx)
+    document.querySelector(".btn_delete_all").addEventListener("click",pop_work_delete)
+}
+function close_work_delete_list(){
+    document.querySelector(".layer_work_delete_list").style.display="none"
+}
+
+async function work_delete_list(idx){
+    let pic_delete_list="";
+    try{
+        const response = await fetch('api/work/week/'+idx);
+        const data = await response.json();
+        console.log(data);
+        if(data.length ===0){
+            pic_delete_list = `<p style="color:red; float: left;">데이터를 가져오는데 실패했습니다.</p>`
+            document.querySelector("#pic_delete_list").innerHTML=pic_delete_list
+            return
+        }
+        data.forEach(work =>{
+            pic_delete_list+=`
+                <div class="input_box" style="display: flex; align-items: center;">
+                    <h4 class="input_title" style=" margin-right: 10px; width: 100%;">${work.projectName}</h4>
+                    <input type="hidden" class="work_idx_delete_input" value="${work.idx}">
+                    <div class="input_title" style=" margin-right: 10px; width: 100%;">${work.gongSo}(${work.costType})</div>
+                    <div class="table-actions">
+                        <a href="#" data-color="#e95959" onclick="work_delete(${work.idx})" style="color: rgb(233, 89, 89);">
+                            <i class="icon-copy dw dw-delete-3"></i>
+                        </a>
+                    </div>
+                </div><br>`
+        })
+        document.querySelector("#pic_delete_list").innerHTML=pic_delete_list
+
+
+    }catch(error){
+        console.log(error)
+    }
+}
+
+function work_delete(idx){
+    fetch('/api/work/'+idx, {
+            method: "DELETE",
+
+        })
+        .then((res) => {
+            console.log(res)
+            location.reload()
+            return;
+        })
+        .catch((err)=>{
+            alert(err);
+        })
+}
+
+function pop_work_delete(){
+    document.querySelector(".layer_work_delete").style.display="block"
+    document.querySelector(".btn_delete").addEventListener('click',work_all_delete)
+}
+function close_work_delete(){
+    document.querySelector(".layer_work_delete").style.display="none"
+}
+function work_all_delete(){
+    const works = [];
+    document.querySelectorAll(".work_idx_delete_input").forEach(work =>{
+        const work_dto = {
+            "idx": work.value
+        };
+        works.push(work_dto)
+    })
+    fetch('/api/work', {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(works)
+
+    })
+    .then((res) => {
+        console.log(res)
+        location.reload()
+        return;
+    })
+    .catch((err)=>{
+        alert(err);
+    })
+}
