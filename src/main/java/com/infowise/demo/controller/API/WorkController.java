@@ -33,10 +33,16 @@ public class WorkController {
         return WorkRep.fromDTO(workService.read(idx));
     }
 
-    @PutMapping("work/{idx}")
-    public Header<WorkDTO> update(@PathVariable(name="idx") Long idx,
-                                  @RequestBody Header<WorkDTO> request){
-        return workService.update(idx, request.getData());
+    @GetMapping("work/week/{idx}")
+    public List<WorkRep> readWeekWork(@PathVariable(name="idx") Long idx){
+        return workService.readList(idx).stream().map(WorkRep::fromDTO).toList();
+    }
+
+    @PutMapping("work")
+    public List<Header<WorkDTO>> update(
+                                  @RequestBody List<WorkReq> request){
+        MemberDTO memberDTO = memberService.read(3L);
+        return workService.updateBulk( request,memberDTO);
     }
 
     @DeleteMapping("work/{idx}")

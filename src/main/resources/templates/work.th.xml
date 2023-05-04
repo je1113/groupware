@@ -15,9 +15,9 @@
                 <attr sel="td.cost_type" th:text="${work.costType}"/>
                 <attr sel="td.project_name" th:text="${work.projectName}"/>
                 <attr sel="td.project_period" th:text="${work.projectPeriod}"/>
-                <attr sel="td.year" th:text="${work.year}"/>
-                <attr sel="td.month" th:text="${work.month}"/>
-                <attr sel="td.week" th:text="${work.week}"/>
+                <attr sel="td.year" th:text="${work.year}+'/'+${work.month}+'/'+${work.week}"/>
+<!--                <attr sel="td.month" th:text="${work.month}"/>-->
+<!--                <attr sel="td.week" th:text="${work.week}"/>-->
                 <attr sel="td.gong_soo" th:text="${work.gongSoo}"/>
                 <!-- View, Delete 부분 -->
                 <attr sel=".dropdown">

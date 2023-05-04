@@ -39,12 +39,8 @@ function check_work(){
                 close_date()
                 pop_work_register()
             }else{
-                alert("이미 등록된 기록이 있습니다. 수정으로 전환합니다.")
-                // 수정 모드
-                // 수정 레이어 띄우기
-                    // data 내용 반복문으로채워 넣기
-                    // 정규식 1을 넘으면 안된다! type은 빈값이 아니다.
-                    // 버튼 리스터, 수정요청 개수만큼 보내기
+                alert("이미 등록된 기록이 있습니다.")
+                close_date()
             }
             return;
         })
@@ -100,7 +96,7 @@ async function pic_list(){
 }
 
 function save_btn_active(){
-    const inputs = document.querySelectorAll('.gong_soo_input');
+    const inputs = document.querySelectorAll('.layer_work_register .gong_soo_input');
     total = 0
     let allInputsFilled = true;
     for (let i = 0; i < inputs.length; i++) {
@@ -145,6 +141,118 @@ function register_work(){
     }
     fetch('/api/work', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(works)
+      })
+        .then(response => {
+        location.reload()
+      })
+        .catch(error => {
+        console.log(error)
+      });
+
+}
+/**
+수정 시작!!
+*/
+function pop_work_edit(idx){
+    document.querySelector(".layer_work_edit").style.display="block"
+    work_list(idx)
+    document.querySelector(".btn_edit").addEventListener("click",edit_work)
+}
+function close_work_edit(){
+    document.querySelector(".layer_work_edit").style.display="none"
+}
+
+async function work_list(idx){
+    let pic_edit_list="";
+        try{
+            const response = await fetch('api/work/week/'+idx);
+            const data = await response.json();
+            console.log(data);
+            if(data.length ===0){
+                pic_edit_list = `<p style="color:red; float: left;">데이터를 가져오는데 실패했습니다.</p>`
+                document.querySelector("#pic_edit_list").innerHTML=pic_edit_list
+                return
+            }
+            data.forEach(work =>{
+                pic_edit_list+=`
+                    <div class="input_box" style="display: flex; align-items: center;">
+                        <h4 class="input_title" style=" margin-right: 10px; width: 100%;">${work.projectName}</h4>
+                        <input type="hidden" class="work_idx_edit_input" value="${work.idx}">
+                        <input type="hidden" class="project_idx_edit_input" value="${work.projectIdx}">
+                        <select class="cost_type_edit_input custom-select">
+                            <option value="0" ${work.costType == "판관비"? 'selected' :''}>판관비</option>
+                            <option value="1" ${work.costType == "연구비"? 'selected' :''}>연구비</option>
+                            <option value="2" ${work.costType == "제조원가"? 'selected' :''}>제조원가</option>
+                        </select>
+                        <input type="number" autocomplete="off" value="${work.gongSoo}" placeholder="공수를 입력해주세요" class="form-control gong_soo_edit_input" >
+                    </div>`
+            })
+            document.querySelector("#pic_edit_list").innerHTML=pic_edit_list
+            year =data[0].year
+            month =data[0].month
+            week =data[0].week
+
+            document.querySelectorAll('.layer_work_edit .gong_soo_edit_input').forEach(input =>{
+                input.addEventListener('input', edit_btn_active )
+            })
+        }catch(error){
+            console.log(error)
+        }
+}
+
+
+function edit_btn_active(){
+    const inputs = document.querySelectorAll('.layer_work_edit .gong_soo_edit_input');
+    total = 0
+    let allInputsFilled = true;
+    for (let i = 0; i < inputs.length; i++) {
+        const inputVal = Number(inputs[i].value);
+        // 0~1사이가 아닐경우 false
+        if (inputVal <= 0 || inputVal > 1) {
+           $(".layer_work_edit .btn_edit").removeClass("active");
+           $(".layer_work_edit .btn_edit").addClass("disabled")
+          return;
+        }
+        total += inputVal;
+    }
+    if (total <= 1 && allInputsFilled) {
+        $(".layer_work_edit .btn_edit").addClass("active");
+        $(".layer_work_edit .btn_edit").removeClass("disabled")
+    } else {
+         $(".layer_work_edit .btn_edit").removeClass("active");
+         $(".layer_work_edit .btn_edit").addClass("disabled")
+    }
+}
+
+function edit_work(){
+    const works = [];
+    const inputs = document.querySelectorAll('.work_idx_edit_input,.project_idx_edit_input,.cost_type_edit_input,.gong_soo_edit_input');
+    console.log(year)
+    console.log(inputs)
+    for(let i =0; i<inputs.length; i+=4){
+        const work_idx = inputs[i].value;
+        const project_idx = inputs[i+1].value;
+        const cost_type = inputs[i+2].value;
+        const gong_soo = inputs[i+3].value;
+
+
+        const work = {
+            "idx": work_idx,
+            "projectIdx": project_idx,
+            "gongSoo": gong_soo,
+            "costType":cost_type,
+            "year":year,
+            "month":month,
+            "week":week
+            };
+        works.push(work)
+    }
+    fetch('/api/work', {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },

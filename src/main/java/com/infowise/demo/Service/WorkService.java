@@ -63,6 +63,12 @@ public class WorkService {
                 .map(WorkDTO::fromEntity)
                 .orElseThrow(()-> new EntityNotFoundException("해당 공수 정보 없음"));
     }
+    @Transactional(readOnly = true)
+    public List<WorkDTO> readList(Long workIdx){
+        Work work = workRepository.findById(workIdx).get();
+        return workRepository.findAllByMemberAndYearAndMonthAndWeek(work.getMember(),work.getYear(),work.getMonth(),work.getWeek())
+                .stream().map(WorkDTO::fromEntity).toList();
+    }
 
     public Header<WorkDTO> create(WorkDTO dto){
         Member member = memberRepository.findById(dto.memberDTO().idx()).get();
@@ -90,10 +96,10 @@ public class WorkService {
             return Header.ERROR("공수정보 입력 실패");
         }
     }
-    public List<Header<WorkDTO>> updateBulk(List<WorkDTO> dtoList){
+    public List<Header<WorkDTO>> updateBulk( List<WorkReq> workReqs, MemberDTO memberDTO){
         List<Header<WorkDTO>> headers = new ArrayList<>();
-        dtoList.forEach(
-                workDTO -> headers.add(update(workDTO.idx(), workDTO))
+        workReqs.forEach(
+                workReq -> headers.add(update(workReq.idx(), workReq.toDto(memberDTO)))
         );
         return headers;
     }

@@ -8,6 +8,7 @@ public record WorkRep(
         Long idx,
         String memberName,
         String costType,
+        Long projectIdx,
         String projectName,
         String projectPeriod,
         Integer year,
@@ -21,7 +22,7 @@ public record WorkRep(
         period = dto.projectDTO().startDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"))
                 + " ~ " + dto.projectDTO().endDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
         return new WorkRep(dto.idx(), dto.memberDTO().name(),
-                dto.costType().getDescription(), dto.projectDTO().name(),
+                dto.costType().getDescription(),dto.projectDTO().idx(), dto.projectDTO().name(),
                 period, dto.year(), dto.month(), dto.week(), dto.gongSoo());
     }
 }

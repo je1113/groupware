@@ -31,7 +31,7 @@
               <div class="dataTables_length" id="DataTables_Table_0_length">
                 <div style="display: flex;">
                   <i class="icon-copy bi bi-card-list"></i>
-                  <p th:text="'프로잭트 ' + ${works.totalElements} + '개'" style="margin-left: 10px;"></p>
+                  <p th:text="'공수 ' + ${works.totalElements} + '개'" style="margin-left: 10px;"></p>
                 </div>
                 <div style="display: flex;">
                   <i class="icon-copy bi bi-book"></i>
@@ -86,9 +86,9 @@
                 <th>구분</th>
                 <th>프로젝트명</th>
                 <th>프로젝트 기간</th>
-                <th>년도</th>
-                <th>월</th>
-                <th>주차</th>
+                <th>년도/월/주차</th>
+<!--                <th>월</th>-->
+<!--                <th>주차</th>-->
                 <th>공수</th>
                 <th class="datatable-nosort">Action</th>
             </tr>
@@ -100,8 +100,8 @@
                 <td class="project_name">사과 재배하기</td>
                 <td class="project_period">23/04~23/05</td>
                 <td class="year">2023</td>
-                <td class="month">4</td>
-                <td class="week">1</td>
+<!--                <td class="month">4</td>-->
+<!--                <td class="week">1</td>-->
                 <td class="gong_soo">0.3</td>
                 <td>
                 <div class="dropdown">
@@ -156,7 +156,7 @@
   </div>
 </div>
 <div th:replace="work_layer/layer_work_register"></div>
-<!--<div th:replace="work_layer/layer_work_edit"></div>-->
+<div th:replace="work_layer/layer_work_edit"></div>
 <!--<div th:replace="work_layer/pop_work_delete"></div>-->
 <div th:replace="work_layer/pop_date"></div>
 <!-- js -->

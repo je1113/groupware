@@ -8,6 +8,7 @@ import com.infowise.demo.dto.WorkDTO;
 import java.time.LocalDate;
 
 public record WorkReq(
+        Long idx,
         Long projectIdx,
         Long costType,
         Float gongSoo,
@@ -16,9 +17,9 @@ public record WorkReq(
         Integer week
 ) {
 
-    public static WorkReq of(Long projectIdx,Long costType, Float gongSoo,
+    public static WorkReq of(Long idx, Long projectIdx,Long costType, Float gongSoo,
                              Integer year, Integer month, Integer week){
-        return new WorkReq(projectIdx,costType, gongSoo, year, month, week);
+        return new WorkReq(idx, projectIdx,costType, gongSoo, year, month, week);
     }
 
     public WorkDTO toDto(MemberDTO memberDTO){
@@ -31,7 +32,7 @@ public record WorkReq(
             costType1 = CostType.MANUFACTURING;
         }
 
-        return WorkDTO.of(null, memberDTO, ProjectDTO.of(projectIdx,null,null,null,null),  costType1 ,
+        return WorkDTO.of(idx, memberDTO, ProjectDTO.of(projectIdx,null,null,null,null),  costType1 ,
                 gongSoo,year,month,week, LocalDate.now());
     }
 }
