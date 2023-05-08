@@ -36,6 +36,15 @@ public class PicService {
         return picRepository.findAllByProject(project)
                 .stream().map(PicDTO::fromEntity).toList();
     }
+
+    @Transactional(readOnly = true)
+    public List<PicDTO> memberPic(Long memberIdx){
+        Member member = memberRepository.findById(memberIdx).get();
+        return picRepository.findAllByMemberAndProject_IsUse(member,Boolean.TRUE)
+                .stream().map(PicDTO::fromEntity).toList();
+    }
+
+
     // String Format으로 바꿔서?(진행중)
     @Transactional(readOnly = true)
     public List<String> picMemberNames(List<ProjectDTO> projects){
