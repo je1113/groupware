@@ -1,6 +1,7 @@
 package com.infowise.demo.Entity;
 
 
+import com.infowise.demo.Enum.RoleType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,33 +23,25 @@ public class Member {
     @Setter private String name;
     @Setter private String team;
     @Setter private String hp;
-
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "member_roles",
-//            joinColumns = @JoinColumn(
-//                    name = "member_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(
-//                    name = "role_id", referencedColumnName = "id"))
-//
-//    @Setter private Collection<Role> roles;
+    @Setter private RoleType roleType;
 
     // 빈 생성자
     protected Member(){}
     // 등록할 때 필요한 정보
     private Member(String email, String pw, String name,
-                   String team, String hp){
+                   String team, String hp, RoleType roleType){
         this.email = email;
         this.pw = pw;
         this.name= name;
         this.team = team;
         this.hp = hp;
+        this.roleType = roleType;
     }
 
     // 외부에서 사용할 때
     // static은 객체 생성없이 클래스를 통해 메서드 직접호출가능
     public static Member of(String email, String pw, String name,
-                             String team, String hp){
-        return new Member(email, pw, name, team, hp);
+                             String team, String hp, RoleType roleType){
+        return new Member(email, pw, name, team, hp, roleType);
     }
 }

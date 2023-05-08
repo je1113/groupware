@@ -7,6 +7,7 @@ import com.infowise.demo.Service.MemberService;
 import com.infowise.demo.Service.PicService;
 import com.infowise.demo.Service.ProjectService;
 import com.infowise.demo.Service.WorkService;
+import com.infowise.demo.dto.InfoWisePrincipal;
 import com.infowise.demo.dto.MemberDTO;
 import com.infowise.demo.dto.ProjectDTO;
 import com.infowise.demo.dto.WorkDTO;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +38,7 @@ public class PageController {
     private final PicService picService;
     private final WorkService workService;
 
-    @PostMapping(path="loginOkYeah")   ///loginOk
+    @PostMapping(path="loginOk")   ///loginOk
     public String loginOk(HttpServletRequest request, String email, String pw){
         if(memberService.login(email, pw).getData() != null){
             HttpSession session = request.getSession();
@@ -78,11 +80,14 @@ public class PageController {
 
     @GetMapping(path="")
     public String member(HttpServletRequest request, ModelMap map,
-                        @PageableDefault(size = 10, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
-                        @RequestParam(required = false) MemberSearchType searchType,
-                        @RequestParam(required = false) String searchValue){
-//        String session = sessionCheck(request);
-//        if(session == null) return "redirect:/login";
+                         @PageableDefault(size = 10, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
+                         @RequestParam(required = false) MemberSearchType searchType,
+                         @RequestParam(required = false) String searchValue,
+                         @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
+        System.out.println(infoWisePrincipal);
+        if(infoWisePrincipal == null){ return "login";}
+        MemberDTO memberDTO = infoWisePrincipal.toDTO();
+        map.addAttribute("sessionInfo", memberDTO.email());
         Page<MemberDTO> members = memberService.searchMember(searchType, searchValue, pageable);
         map.addAttribute("members", members);
         List<Integer> barNumbers = IntStream.range(0, members.getTotalPages()).boxed().toList();

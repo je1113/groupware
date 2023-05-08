@@ -9,19 +9,19 @@
 		<link
 			rel="apple-touch-icon"
 			sizes="180x180"
-			href="/vendors/images/apple-touch-icon.png"
+			href="/vendors/images/logo.png"
 		/>
 		<link
 			rel="icon"
 			type="image/png"
 			sizes="32x32"
-			href="/vendors/images/adminlogo.png"
+			href="/vendors/images/logo.png"
 		/>
 		<link
 			rel="icon"
 			type="image/png"
 			sizes="16x16"
-			href="/vendors/images/adminlogo.png"
+			href="/vendors/images/logo.png"
 		/>
 
 		<!-- Mobile Specific Metas -->
@@ -80,7 +80,7 @@
 			>
 				<div class="brand-logo">
 					<a href="/login">
-						<img src="/vendors/images/adminlogo.png" alt="" />
+						<img src="/vendors/images/logo.png" alt="" />
 					</a>
 				</div>
 <!--				<div class="login-menu">-->
@@ -101,16 +101,16 @@
 					<div class="col-md-6 col-lg-5">
 						<div class="login-box bg-white box-shadow border-radius-10">
 							<div class="login-title">
-								<h2 class="text-center text-primary">Login To Supreme</h2>
+								<h2 class="text-center text-primary">Login To Infowise</h2>
 							</div>
-							<form method="post" action="/loginOkYeah" id="frm">
+							<form method="post" th:action="@{/loginOk}" id="frm">
 								<div class="input-group custom">
 									<input
 										type="text"
 										class="form-control form-control-lg"
 										placeholder="Username"
 										id="userid"
-										name="userid"
+										name="email"
 									/>
 									<div class="input-group-append custom">
 										<span class="input-group-text"
@@ -124,7 +124,7 @@
 										class="form-control form-control-lg"
 										placeholder="**********"
 										id="userpw"
-										name="userpw"
+										name="pw"
 									/>
 									<div class="input-group-append custom">
 										<span class="input-group-text"
@@ -149,12 +149,7 @@
 			</div>
 		</div>
 
-		<!-- welcome modal end -->
-		<!-- js -->
-<!--		<script src="vendors/scripts/core.js"></script>-->
-<!--		<script src="vendors/scripts/script.min.js"></script>-->
-<!--		<script src="vendors/scripts/process.js"></script>-->
-<!--		<script src="vendors/scripts/layout-settings.js"></script>-->
+
 		<script src="/js/login.js"></script>
 		<!-- Google Tag Manager (noscript) -->
 		<noscript
@@ -165,6 +160,5 @@
 				style="display: none; visibility: hidden"
 			></iframe
 		></noscript>
-		<!-- End Google Tag Manager (noscript) -->
 	</body>
 </html>

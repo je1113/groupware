@@ -29,6 +29,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath pw = createString("pw");
 
+    public final EnumPath<com.infowise.demo.Enum.RoleType> roleType = createEnum("roleType", com.infowise.demo.Enum.RoleType.class);
+
     public final StringPath team = createString("team");
 
     public QMember(String variable) {

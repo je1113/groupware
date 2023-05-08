@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     //검색용
+
+    Optional<Member> findByEmail(String email);
     Page<Member> findByEmailContaining(String email, Pageable pageable);
     Page<Member> findByNameContaining(String name, Pageable pageable);
     Page<Member> findByTeam(String group, Pageable pageable);
