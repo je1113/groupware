@@ -4,6 +4,7 @@ import com.infowise.demo.Enum.RoleType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 import java.util.Set;
@@ -19,7 +20,10 @@ public record InfoWisePrincipal(
         Collection<? extends GrantedAuthority> authorities,
         RoleType roleType
 ) implements UserDetails {
-
+    private static String encodePassword(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(password);
+    }
     public static  InfoWisePrincipal ofUser(Long idx,
                                         String email,
                                         String pw,
@@ -28,7 +32,8 @@ public record InfoWisePrincipal(
                                         String hp,
                                         RoleType roleType){
         Set<RoleType> roleTypes = Set.of(RoleType.USER);
-        return new InfoWisePrincipal(idx, email, pw, name, team, hp,
+        String encodedPw = encodePassword(pw);
+        return new InfoWisePrincipal(idx, email, encodedPw, name, team, hp,
                 roleTypes.stream().map(RoleType::getName)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toUnmodifiableSet()), roleType
@@ -42,7 +47,8 @@ public record InfoWisePrincipal(
                                             String hp,
                                             RoleType roleType){
         Set<RoleType> roleTypes = Set.of(RoleType.USER,RoleType.MANAGER);
-        return new InfoWisePrincipal(idx, email, pw, name, team, hp,
+        String encodedPw = encodePassword(pw);
+        return new InfoWisePrincipal(idx, email, encodedPw, name, team, hp,
                 roleTypes.stream().map(RoleType::getName)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toUnmodifiableSet()), roleType

@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <thlogic>
     <attr sel=".main-container" th:object="${projects}">
+        <attr sel="#create" sec:authorize="hasRole('MANAGER')" />
+
         <attr sel="#search-form" th:action="@{/project}" th:method="get"/>
         <attr sel="#search-type" th:remove="all-but-first">
             <attr sel="option[0]"
@@ -19,9 +21,11 @@
                 <attr sel="td.is_use" th:text="${project.isUse}? 'Y':'N'"/>
                 <!-- View, Delete 부분 -->
                 <attr sel=".dropdown">
-                    <attr sel="#pic_btn" th:onclick="'javascript:pop_project_pic(' + ${project.idx} + ');'"/>
-                    <attr sel="#edit_btn" th:onclick="'javascript:pop_project_edit(' + ${project.idx} + ');'"/>
-                    <attr sel="#delete_btn" th:onclick="'javascript:pop_project_delete(' + ${project.idx} + ');'"/>
+                    <attr sel="#plus_btn" th:if="${isPics[i.index] == null }" th:onclick="'javascript:plus_pic(' + ${project.idx} + ');'"/>
+                    <attr sel="#minus_btn" th:if="${isPics[i.index] != null }" th:onclick="'javascript:minus_pic(' + ${isPics[i.index].idx} +');'"/>
+                    <attr sel="#pic_btn" sec:authorize="hasRole('MANAGER')" th:onclick="'javascript:pop_project_pic(' + ${project.idx} + ');'"/>
+                    <attr sel="#edit_btn" sec:authorize="hasRole('MANAGER')" th:onclick="'javascript:pop_project_edit(' + ${project.idx} + ');'"/>
+                    <attr sel="#delete_btn" sec:authorize="hasRole('MANAGER')" th:onclick="'javascript:pop_project_delete(' + ${project.idx} + ');'"/>
                 </attr>
             </attr>
         </attr>

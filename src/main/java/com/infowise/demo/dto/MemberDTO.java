@@ -2,6 +2,8 @@ package com.infowise.demo.dto;
 
 import com.infowise.demo.Entity.Member;
 import com.infowise.demo.Enum.RoleType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public record MemberDTO(Long idx, String email, String pw, String name,
                         String team, String hp, RoleType roleType) {
@@ -22,5 +24,6 @@ public record MemberDTO(Long idx, String email, String pw, String name,
 
 
     //DTO -> Entity
-    public Member toEntity(){ return Member.of( email, pw, name, team, hp, roleType);}
+    public Member toEntity(String encodePw){
+        return Member.of( email, encodePw, name, team, hp, roleType);}
 }

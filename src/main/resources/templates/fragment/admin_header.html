@@ -1,20 +1,8 @@
 <html lang="ko"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org/">
-<div th:fragment="header(sessionInfo)">
+<div th:fragment="header">
 
-<!--<div class="pre-loader">-->
-<!--  <div class="pre-loader-box">-->
-<!--    <div class="loader-logo">-->
-<!--      <img src="/vendors/images/adminlogo.png" alt="" />-->
-<!--    </div>-->
-<!--    <div class="loader-progress" id="progress_div">-->
-<!--      <div class="bar" id="bar1"></div>-->
-<!--    </div>-->
-<!--    <div class="percent" id="percent1">0%</div>-->
-<!--    <div class="loading-text">Loading...</div>-->
-<!--  </div>-->
-<!--</div>-->
 <div class="header">
   <div class="header-left">
     <div class="menu-icon bi bi-list"></div>
@@ -24,19 +12,6 @@
     ></div>
 
   </div>
-<!--  <div class="header-right">-->
-<!--    <div class="dashboard-setting user-notification">-->
-<!--      <div class="dropdown">-->
-<!--        <a-->
-<!--                class="dropdown-toggle no-arrow"-->
-<!--                href="javascript:;"-->
-<!--                data-toggle="right-sidebar"-->
-<!--        >-->
-<!--          <i class="dw dw-settings2"></i>-->
-<!--        </a>-->
-<!--      </div>-->
-<!--    </div>-->
-
     <div class="user-info-dropdown">
       <div class="dropdown">
         <a
@@ -46,9 +21,9 @@
                 data-toggle="dropdown"
         >
 							<span class="user-icon">
-								<img src="/vendors/images/profile-photo.jpg" alt="" />
+								<img src="/vendors/images/profile.webp" alt="" />
 							</span>
-          <span class="user-name" th:text="${sessionInfo}">Jooeun</span>
+          <span class="user-name" id="username">Jooeun</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
 

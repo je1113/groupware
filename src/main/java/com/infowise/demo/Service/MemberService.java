@@ -7,8 +7,10 @@ import com.infowise.demo.dto.Header;
 import com.infowise.demo.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +25,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     // 리스트
     @Transactional(readOnly = true)
@@ -47,15 +49,17 @@ public class MemberService {
     }
 
     public Header<MemberDTO> create(MemberDTO dto){
-        Member newMember = memberRepository.save(dto.toEntity());
+        String encodePw = passwordEncoder.encode(dto.pw());
+        Member newMember = memberRepository.save(dto.toEntity(encodePw));
         return Header.OK(MemberDTO.fromEntity(newMember));
     }
 
 
     public Header<MemberDTO> update(Long memberId, MemberDTO dto){
         try{
+//            String encodePw = passwordEncoder.encode(dto.pw());
             Member member = memberRepository.getReferenceById(memberId);
-            if(dto.pw()!= null){member.setPw(dto.pw());}
+//            if(dto.pw()!= null){member.setPw(encodePw);}
             if(dto.name()!= null){member.setName(dto.name());}
             if(dto.team()!= null){member.setTeam(dto.team());}
             if(dto.hp()!= null){member.setHp(dto.hp());}

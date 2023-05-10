@@ -7,10 +7,7 @@ import com.infowise.demo.Service.MemberService;
 import com.infowise.demo.Service.PicService;
 import com.infowise.demo.Service.ProjectService;
 import com.infowise.demo.Service.WorkService;
-import com.infowise.demo.dto.InfoWisePrincipal;
-import com.infowise.demo.dto.MemberDTO;
-import com.infowise.demo.dto.ProjectDTO;
-import com.infowise.demo.dto.WorkDTO;
+import com.infowise.demo.dto.*;
 import com.infowise.demo.rep.WorkRep;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -38,33 +35,7 @@ public class PageController {
     private final PicService picService;
     private final WorkService workService;
 
-    @PostMapping(path="loginOk")   ///loginOk
-    public String loginOk(HttpServletRequest request, String email, String pw){
-        if(memberService.login(email, pw).getData() != null){
-            HttpSession session = request.getSession();
-            String name = memberService.login(email, pw).getData().name();
-            session.setAttribute("email", email);
-            session.setAttribute("name", name);
-            return "redirect:/";
-        }else{
-            return "redirect:/login";
-        }
-    }
 
-    private String sessionCheck(HttpServletRequest request  ){
-        HttpSession session = request.getSession(false);
-        String id=null;
-        String name = null;
-        if(session== null){
-            System.out.println("세션이 없습니다");
-            return null;
-        }else{
-            id = (String) session.getAttribute("id");
-            name = (String) session.getAttribute("name");
-            System.out.println("세션이 있습니다 id=" +id+ ", name="+name );
-            return id+"("+name+")";
-        }
-    }
 
     @GetMapping("logout")
     public String logout(HttpServletRequest request){
@@ -84,10 +55,7 @@ public class PageController {
                          @RequestParam(required = false) MemberSearchType searchType,
                          @RequestParam(required = false) String searchValue,
                          @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
-        System.out.println(infoWisePrincipal);
-        if(infoWisePrincipal == null){ return "login";}
-        MemberDTO memberDTO = infoWisePrincipal.toDTO();
-        map.addAttribute("sessionInfo", memberDTO.email());
+        if(infoWisePrincipal == null) return "redirect:/login";
         Page<MemberDTO> members = memberService.searchMember(searchType, searchValue, pageable);
         map.addAttribute("members", members);
         List<Integer> barNumbers = IntStream.range(0, members.getTotalPages()).boxed().toList();
@@ -100,14 +68,19 @@ public class PageController {
     public String project(HttpServletRequest request, ModelMap map,
                           @PageableDefault(size = 10, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
                           @RequestParam(required = false) ProjectSearchType searchType,
-                          @RequestParam(required = false) String searchValue){
+                          @RequestParam(required = false) String searchValue,
+                          @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
         Page<ProjectDTO> projects = projectService.searchProject(searchType, searchValue, pageable);
         map.addAttribute("projects", projects);
         List<Integer> barNumbers = IntStream.range(0, projects.getTotalPages()).boxed().toList();
         map.addAttribute("barNumbers",barNumbers);
         map.addAttribute("searchTypes", ProjectSearchType.values());
+
         List<String> picNames = picService.picMemberNames(projects.stream().toList());
         map.addAttribute("picNames",picNames);
+
+        List<PicDTO> isPic = picService.isPic(projects.stream().toList(), infoWisePrincipal);
+        map.addAttribute("isPics", isPic);
         return"project";
     }
 

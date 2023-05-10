@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/src/styles/layer.css">
+<link rel="stylesheet" href="/vendors/styles/layer.css">
 <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <html xmlns:th="http://www.thymeleaf.org">
@@ -42,7 +42,13 @@
                         <div class="input_item"><input type="text" maxlength="13" oninput="autoHyphen(this)" autoclete="off" class="input_txt" id="hp_input"></div>
                         <p class="input_error" id="hp_input_error"></p>
                     </div>
-
+                    <div class="input_box" id="role_input_box">
+                        <h4 class="input_title mb-10">권한</h4>
+                        <select class="custom-select col-12" id="role_input">
+                            <option value="USER" selected>User</option>
+                            <option value="MANAGER">Manager</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

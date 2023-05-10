@@ -9,6 +9,7 @@
                   th:text = "${searchType.description}"
                   th:selected ="${param.searchType !=null && (param.searchType.toString == searchType.name)}"/>
         </attr>
+
         <attr sel="tbody" th:remove="all-but-first">
             <attr sel="tr[0]" th:each="work: ${works}">
                 <attr sel="td.member_name" th:text="${work.memberName}"/>
@@ -20,8 +21,9 @@
 <!--                <attr sel="td.week" th:text="${work.week}"/>-->
                 <attr sel="td.gong_soo" th:text="${work.gongSoo}"/>
                 <!-- View, Delete 부분 -->
-                <attr sel=".dropdown">
-                    <attr sel="#edit_btn" th:onclick="'javascript:pop_work_edit(' + ${work.idx} + ');'"/>
+                <attr sel=".dropdown"
+                      th:if="${work.memberEmail} == ${#authentication.name} or ${#authorization.expression('hasRole(''MANAGER'')')}">
+                    <attr sel="#edit_btn"  th:onclick="'javascript:pop_work_edit(' + ${work.idx} + ');'"/>
                     <attr sel="#delete_btn" th:onclick="'javascript:pop_work_delete_list(' + ${work.idx} + ');'"/>
                 </attr>
             </attr>

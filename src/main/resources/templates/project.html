@@ -6,7 +6,7 @@
 <!--head 끝 -->
 <body>
 <!-- header 시작 -->
-<div th:replace="fragment/admin_header :: header(${sessionInfo})"></div>
+<div th:replace="fragment/admin_header :: header"></div>
 <!-- header 끝 -->
 <!-- right-sidebar 시작 -->
 <div th:replace="fragment/admin_rightsidebar :: rightsidebar"></div>
@@ -22,7 +22,7 @@
       <div class="card-box mb-30">
         <div class="pd-20" id="top">
           <h4 class="text-blue h4">프로젝트 리스트</h4>
-          <button type="button" class="btn btn-primary m-t-15 waves-effect" onclick="pop_project_register()">프로젝트 등록</button>
+          <button type="button" class="btn btn-primary m-t-15 waves-effect" id="create" onclick="pop_project_register()">프로젝트 등록</button>
           <!--번호/아이디/이름/전화번호/등록날짜-->
         </div>
         <div class="pb-20">
@@ -110,8 +110,14 @@
                   <div
                           class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list"
                   >
+                      <a class="dropdown-item pic" href="#" onclick="plus_pic()" id="plus_btn"
+                      ><i class="icon-copy dw dw-enter"></i></i> 투입 </a
+                      >
+                      <a class="dropdown-item pic" href="#" onclick="minus_pic()" id="minus_btn"
+                      ><i class="icon-copy dw dw-logout1"></i></i> 철수 </a
+                      >
                     <a class="dropdown-item pic" href="#" onclick="pop_project_pic()" id="pic_btn"
-                    ><i class="icon-copy dw dw-add-user"></i> 담당자 등록</a
+                    ><i class="icon-copy dw dw-add-user"></i> 담당자</a
                     >
                     <a class="dropdown-item edit" href="#" onclick="pop_project_edit()" id="edit_btn"
                     ><i class="dw dw-edit2"></i> 수정</a

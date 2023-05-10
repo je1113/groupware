@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <thlogic>
     <attr sel=".main-container" th:object="${members}">
+        <attr sel="#create" sec:authorize="hasRole('MANAGER')" />
+
         <attr sel="#search-form" th:action="@{/}" th:method="get"/>
         <attr sel="#search-type" th:remove="all-but-first">
             <attr sel="option[0]"
@@ -9,6 +11,7 @@
                   th:text = "${searchType.description}"
                   th:selected ="${param.searchType !=null && (param.searchType.toString == searchType.name)}"/>
         </attr>
+        <attr sel=".datatable-nosort" sec:authorize="hasRole('MANAGER')"/>
         <attr sel="tbody" th:remove="all-but-first">
             <attr sel="tr[0]" th:each="member : ${members}">
                 <attr sel="td.idx" th:text="${member.idx}"/>
@@ -17,7 +20,7 @@
                 <attr sel="td.hp" th:text="${member.hp}"/>
                 <attr sel="td.email" th:text="${member.email}"/>
                 <!-- View, Delete 부분 -->
-                <attr sel=".dropdown">
+                <attr sel="#manager" sec:authorize="hasRole('MANAGER')">
                     <attr sel="#edit_btn" th:onclick="'javascript:pop_member_edit(' + ${member.idx} + ');'"/>
                     <attr sel="#delete_btn" th:onclick="'javascript:pop_member_delete(' + ${member.idx} + ');'"/>
                 </attr>

@@ -12,6 +12,7 @@ public record PicRep(
         String projectName,
         String projectPeriod,
         String memberName,
+        String memberEmail,
         String memberGroup
 ) {
 
@@ -26,6 +27,7 @@ public record PicRep(
                 dto.projectDTO().name(),
                 period,
                 dto.memberDTO().name(),
+                dto.memberDTO().email(),
                 dto.memberDTO().team()
        );
     }

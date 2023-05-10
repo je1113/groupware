@@ -7,6 +7,7 @@ import com.infowise.demo.Repository.MemberRepository;
 import com.infowise.demo.Repository.PicRepository;
 import com.infowise.demo.Repository.ProjectRepository;
 import com.infowise.demo.dto.Header;
+import com.infowise.demo.dto.InfoWisePrincipal;
 import com.infowise.demo.dto.PicDTO;
 import com.infowise.demo.dto.ProjectDTO;
 import com.infowise.demo.req.PicReq;
@@ -92,5 +93,21 @@ public class PicService {
             picRepository.delete(pic);
             return Header.OK();
         }).orElseGet(()->Header.ERROR("pic 존재하지 않음"));
+    }
+
+    //Project list와 member가 들어가면 프로젝트 담당여부, 있다면 pic_idx
+    public List<PicDTO> isPic(List<ProjectDTO> projectDTOList, InfoWisePrincipal infoWisePrincipal){
+        List<PicDTO> picDTOList = new ArrayList<>();
+        Member member = memberRepository.findById(infoWisePrincipal.idx()).get();
+        for (ProjectDTO projectDTO : projectDTOList) {
+            Project project = projectRepository.findById(projectDTO.idx()).get();
+            if (picRepository.existsByMemberAndProject(member, project)) {
+                picDTOList.add(PicDTO.fromEntity(picRepository.findByMemberAndProject(member,project)));
+            }else{
+                picDTOList.add(null);
+            }
+        }
+        System.out.println("pic리스트"+picDTOList);
+        return picDTOList;
     }
 }

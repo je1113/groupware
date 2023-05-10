@@ -13,7 +13,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,7 +26,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeRequests(auth -> auth.anyRequest().permitAll())
+                .authorizeRequests(auth -> auth
+                        .antMatchers("/", "/project/**", "/member/**", "/work/**").authenticated() // 특정 URL 패턴에 대해서만 인증 요구
+                        .anyRequest().permitAll() // 나머지 URL 패턴은 인증 요구하지 않음
+                )
                 .formLogin()
                     .loginPage("/login")            // 사용자 정의 로그인 페이지
                     .defaultSuccessUrl("/")            // 로그인 성공 후 이동 페이지
@@ -33,7 +38,7 @@ public class SecurityConfig {
                     .passwordParameter("pw")            // 패스워드 파라미터명 설정
                     .loginProcessingUrl("/loginOk")            // 로그인 Form Action Url
                     .successHandler(new CustomLoginSuccessHandler())		// 로그인 성공 후 핸들러
-                    //              .failureHandler(loginFailureHandler())		// 로그인 실패 후 핸들러
+                    .failureHandler(new LoginFailureHandler())		// 로그인 실패 후 핸들러
                 .and()
                 .logout(logout -> logout.logoutSuccessUrl("/"))
                 .logout((logout) -> logout.permitAll())
@@ -46,7 +51,8 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
