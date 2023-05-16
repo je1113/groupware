@@ -248,12 +248,12 @@ function send_edit(idx) {
             "resultCode":"ok",
             "description":"정상",
             "data":{
-                "email" : edit_email.innerHTML,
+                "email" : edit_email.value,
 //                "pw":`${edit_pw.value}`,
                 "name":`${edit_name.value}`,
                 "team":`${edit_team.value}`,
                 "hp":`${edit_hp.value}`,
-                "role": `${edit_role.value}`
+                "roleType": `${edit_role.value}`
             }
         }),
     })
@@ -346,6 +346,7 @@ document.querySelector('#email_edit_input').addEventListener('input', edit_btn_a
 //document.querySelector('#pw_edit_input').addEventListener('input', edit_btn_active)
 document.querySelector('#name_edit_input').addEventListener('input', edit_btn_active )
 document.querySelector('#hp_edit_input').addEventListener('input', edit_btn_active)
+document.querySelector('#role_edit_input').addEventListener('change', edit_btn_active)
 
 
 ////관리자 조회👀👀👀👀👀👀👀👀

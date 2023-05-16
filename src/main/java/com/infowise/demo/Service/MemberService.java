@@ -49,8 +49,8 @@ public class MemberService {
     }
 
     public Header<MemberDTO> create(MemberDTO dto){
-        String encodePw = passwordEncoder.encode(dto.pw());
-        Member newMember = memberRepository.save(dto.toEntity(encodePw));
+//        String encodePw = passwordEncoder.encode(dto.pw());
+        Member newMember = memberRepository.save(dto.toEntity("{noop}" + dto.pw()));
         return Header.OK(MemberDTO.fromEntity(newMember));
     }
 
@@ -60,9 +60,11 @@ public class MemberService {
 //            String encodePw = passwordEncoder.encode(dto.pw());
             Member member = memberRepository.getReferenceById(memberId);
 //            if(dto.pw()!= null){member.setPw(encodePw);}
+            if(dto.email()!= null){member.setEmail(dto.email());}
             if(dto.name()!= null){member.setName(dto.name());}
             if(dto.team()!= null){member.setTeam(dto.team());}
             if(dto.hp()!= null){member.setHp(dto.hp());}
+            if(dto.roleType()!=null){member.setRoleType(dto.roleType());}
             return Header.OK();
         }catch (EntityNotFoundException e){
             log.warn("직원 정보 수정 실패. 해당 직원이 없습니다 - dto:{}", dto);

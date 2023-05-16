@@ -357,3 +357,31 @@ function work_all_delete(){
         alert(err);
     })
 }
+
+document.querySelector(".buttons-excel").addEventListener('click',downloadExcelFile)
+function downloadExcelFile() {
+  fetch("api/work/export", {
+    method: "GET",
+    responseType: "blob"
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.blob();
+      } else {
+        throw new Error("API 요청이 실패했습니다.");
+      }
+    })
+    .then(blob => {
+      // 응답으로 받은 Blob 데이터를 파일로 변환하여 다운로드
+      var url = window.URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = "work_data.xls";
+      link.click();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+      // 오류 처리 로직
+      console.error("다운로드 오류:", error);
+    });
+}

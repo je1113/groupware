@@ -14,14 +14,20 @@ import com.infowise.demo.dto.WorkDTO;
 import com.infowise.demo.req.WorkReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
@@ -125,4 +131,43 @@ public class WorkService {
         return workRepository.findAllByMemberAndYearAndMonthAndWeek(member, year, month, week)
                 .stream().map(WorkDTO::fromEntity).toList();
     }
+
+
+    // excel export
+    public Workbook generateExcelFile() {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Work Data");
+
+        List<Work> works = workRepository.findAll(); // Work 데이터 조회 (예시로 가정)
+        DecimalFormat decimalFormat = new DecimalFormat("#.##"); //공수 소수2째 자리까지
+
+        int rowIdx = 0;
+        Row headerRow = sheet.createRow(rowIdx++);
+        headerRow.createCell(0).setCellValue("사용자 이름");
+        headerRow.createCell(1).setCellValue("원가 구분");
+        headerRow.createCell(2).setCellValue("프로젝트 이름");
+        headerRow.createCell(3).setCellValue("프로젝트 시작날짜");
+        headerRow.createCell(4).setCellValue("프로젝트 종료날짜");
+        headerRow.createCell(5).setCellValue("년도");
+        headerRow.createCell(6).setCellValue("월");
+        headerRow.createCell(7).setCellValue("주");
+        headerRow.createCell(8).setCellValue("공수");
+
+        for (Work work : works) {
+            Row row = sheet.createRow(rowIdx++);
+
+            row.createCell(0).setCellValue(work.getMember().getName());
+            row.createCell(1).setCellValue(work.getCostType().getDescription());
+            row.createCell(2).setCellValue(work.getProject().getName());
+            row.createCell(3).setCellValue(work.getProject().getStartDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+            row.createCell(4).setCellValue(work.getProject().getEndDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+            row.createCell(5).setCellValue(work.getYear());
+            row.createCell(6).setCellValue(work.getMonth());
+            row.createCell(7).setCellValue(work.getWeek());
+            row.createCell(8).setCellValue(Double.parseDouble(decimalFormat.format(work.getGongSoo())));
+        }
+
+        return workbook;
+    }
+
 }
