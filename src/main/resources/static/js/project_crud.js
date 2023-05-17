@@ -45,7 +45,7 @@ function send_create() {
 }
 // 프로젝트 이름 정규 표현식
 function validateName(strName){
-    const reg_name = /^[0-9a-zA-Z가-힣_\s]+$/g;
+    const reg_name = /^[a-zA-Z0-9가-힣|\s!#$%&()*+,-./:;<=>?@[\]^_`{|}~]+$/g;
     if(!reg_name.test(''+strName)){
         return false;
     }

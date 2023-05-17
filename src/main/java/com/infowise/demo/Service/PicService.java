@@ -98,15 +98,22 @@ public class PicService {
     //Project list와 member가 들어가면 프로젝트 담당여부, 있다면 pic_idx
     public List<PicDTO> isPic(List<ProjectDTO> projectDTOList, InfoWisePrincipal infoWisePrincipal){
         List<PicDTO> picDTOList = new ArrayList<>();
-        Member member = memberRepository.findById(infoWisePrincipal.idx()).get();
-        for (ProjectDTO projectDTO : projectDTOList) {
-            Project project = projectRepository.findById(projectDTO.idx()).get();
-            if (picRepository.existsByMemberAndProject(member, project)) {
-                picDTOList.add(PicDTO.fromEntity(picRepository.findByMemberAndProject(member,project)));
-            }else{
-                picDTOList.add(null);
+        Optional<Member> member = memberRepository.findById(infoWisePrincipal.idx());
+        if(member.isPresent()){
+            for (ProjectDTO projectDTO : projectDTOList) {
+                Optional<Project> project = projectRepository.findById(projectDTO.idx());
+                if(project.isPresent()){
+                    if (picRepository.existsByMemberAndProject(member.get(), project.get())) {
+                        picDTOList.add(PicDTO.fromEntity(picRepository.findByMemberAndProject(member.get(),project.get())));
+                    }else{
+                        picDTOList.add(null);
+                    }
+                }
             }
+        }else{
+            picDTOList = null;
         }
+
         System.out.println("pic리스트"+picDTOList);
         return picDTOList;
     }

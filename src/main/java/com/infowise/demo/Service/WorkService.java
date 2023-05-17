@@ -30,10 +30,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional
@@ -170,4 +168,19 @@ public class WorkService {
         return workbook;
     }
 
+    public List<Member> notWorkMember(){
+        LocalDate today = LocalDate.now();
+        List<Work> works = workRepository.findByYearAndMonthAndWeek
+                (today.getYear(),today.getMonthValue(),(int) Math.ceil((double) today.getDayOfMonth() /7)); // 제외할 멤버 리스트
+        Set<Member> excludedMembers = new HashSet<>();
+        for (Work work : works) {
+            excludedMembers.add(work.getMember());
+        }
+        List<Member> allMembers =memberRepository.findAll(); // 전체 멤버 리스트
+
+        List<Member> remainingMembers = allMembers.stream()
+                .filter(member -> !excludedMembers.contains(member))
+                .collect(Collectors.toList());
+        return remainingMembers;
+    }
 }

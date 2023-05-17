@@ -25,6 +25,7 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
     Page<Work> findByProjectNameContaining(String projectName, Pageable pageable);
 
     Page<Work> findByDateBetween( LocalDate startDate, LocalDate endDate, Pageable pageable);
+    List<Work> findByYearAndMonthAndWeek(Integer year, Integer month, Integer week);
 
 }
 
