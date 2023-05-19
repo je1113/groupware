@@ -18,11 +18,13 @@ p, select, table, td, textarea, th, ul {
     margin: 0;
     padding: 0;
 }
+/*
 a {
     text-decoration: none;
     color: inherit;
     -webkit-tap-highlight-color: rgba(0, 0, 0, .1);
 }
+*/
 li,  ol,  ul {
     list-style: none;
     padding: 0px;

@@ -7,12 +7,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public record ProjectRep(Long idx, String name, LocalDateTime startDate,
-                         LocalDateTime endDate, String period, Boolean isUse) {
+                         LocalDateTime endDate, String period, Boolean isUse, String costType) {
     public static ProjectRep fromDTO(ProjectDTO dto){
         String period;
-        period = dto.startDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"))
-        + " ~ "+ dto.endDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
+        period = dto.startDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"))
+        + " ~ "+ dto.endDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
+
+        String costTypeString;
+        if(dto.costType() == null){costTypeString = " ";}
+        else{costTypeString = dto.costType().getDescription();}
         return new ProjectRep(
-                dto.idx(),dto.name(), dto.startDate(),dto.endDate(),period, dto.isUse() );
+                dto.idx(),dto.name(), dto.startDate(),dto.endDate(),period, dto.isUse(), costTypeString);
     }
 }

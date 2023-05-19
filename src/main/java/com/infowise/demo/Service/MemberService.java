@@ -1,8 +1,12 @@
 package com.infowise.demo.Service;
 
 import com.infowise.demo.Entity.Member;
+import com.infowise.demo.Entity.Pic;
+import com.infowise.demo.Entity.Work;
 import com.infowise.demo.Enum.MemberSearchType;
 import com.infowise.demo.Repository.MemberRepository;
+import com.infowise.demo.Repository.PicRepository;
+import com.infowise.demo.Repository.WorkRepository;
 import com.infowise.demo.dto.Header;
 import com.infowise.demo.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -26,6 +31,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final WorkRepository workRepository;
+    private final PicRepository picRepository;
 
     // 리스트
     @Transactional(readOnly = true)
@@ -73,11 +80,20 @@ public class MemberService {
     }
 
     public Header delete(Long memberId){
-        Optional<Member> member = memberRepository.findById(memberId);
-        return member.map(e ->{
-            memberRepository.delete(e);
-            return Header.OK();
-        }).orElseGet(()-> Header.ERROR("해당 직원이 없습니다. - memberId"+memberId));
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        if(memberOptional.isPresent()){
+            Member member = memberOptional.get();
+            List<Work> works = workRepository.findByMember(member,Pageable.unpaged()).stream().toList();
+            List<Pic> pics = picRepository.findAllByMember(member);
+            if((works ==null || works.isEmpty()) &&(pics ==null || pics.isEmpty())){
+                memberRepository.delete(member);
+                return Header.OK();
+            }else{
+                return Header.ERROR("해당 사용자의 담당 및 공수정보를 먼저 삭제해야합니다.");
+            }
+        }else{
+            return Header.ERROR("해당 직원이 없습니다.");
+        }
     }
 
     public Header<MemberDTO> login(String email, String pw){

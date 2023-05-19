@@ -3,14 +3,12 @@ package com.infowise.demo.Service;
 import com.infowise.demo.Entity.Member;
 import com.infowise.demo.Entity.Project;
 import com.infowise.demo.Entity.Work;
+import com.infowise.demo.Enum.RoleType;
 import com.infowise.demo.Enum.WorkSearchType;
 import com.infowise.demo.Repository.MemberRepository;
 import com.infowise.demo.Repository.ProjectRepository;
 import com.infowise.demo.Repository.WorkRepository;
-import com.infowise.demo.dto.Header;
-import com.infowise.demo.dto.MemberDTO;
-import com.infowise.demo.dto.ProjectDTO;
-import com.infowise.demo.dto.WorkDTO;
+import com.infowise.demo.dto.*;
 import com.infowise.demo.req.WorkReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,14 +49,24 @@ public class WorkService {
     }
 
     @Transactional(readOnly = true)
-    public Page<WorkDTO> searchWork(WorkSearchType searchType, String searchKeyword, Pageable pageable){
-        if(searchKeyword == null|| searchKeyword.isBlank()) {
-            return workRepository.findAll(pageable).map(WorkDTO::fromEntity);
+    public Page<WorkDTO> searchWork(WorkSearchType searchType, String searchKeyword, Pageable pageable, InfoWisePrincipal infoWisePrincipal) {
+        if (infoWisePrincipal.roleType() == RoleType.MANAGER) {
+            if (searchKeyword == null || searchKeyword.isBlank()) {
+                return workRepository.findAll(pageable).map(WorkDTO::fromEntity);
+            }
+            return switch (searchType) {
+                case MEMBER -> workRepository.findByMemberNameContaining(searchKeyword, pageable).map(WorkDTO::fromEntity);
+                case PROJECT -> workRepository.findByProjectNameContaining(searchKeyword, pageable).map(WorkDTO::fromEntity);
+            };
+        }else{
+            Member member = memberRepository.findById(infoWisePrincipal.idx()).get();
+            if (searchKeyword == null || searchKeyword.isBlank()) {
+                return workRepository.findByMember(member,pageable).map(WorkDTO::fromEntity);
+            }else{
+                return workRepository.findByMemberAndProjectNameContaining(member,searchKeyword, pageable).map(WorkDTO::fromEntity);
+            }
+
         }
-        return switch (searchType){
-            case MEMBER -> workRepository.findByMemberNameContaining(searchKeyword,pageable).map(WorkDTO::fromEntity);
-            case PROJECT -> workRepository.findByProjectNameContaining(searchKeyword,pageable).map(WorkDTO::fromEntity);
-        };
     }
 
     @Transactional(readOnly = true)
@@ -92,7 +100,6 @@ public class WorkService {
     public Header<WorkDTO> update(Long idx, WorkDTO dto){
         try{
             Work work = workRepository.getReferenceById(dto.idx());
-            if(dto.costType()!=null){work.setCostType(dto.costType());}
             if(dto.gongSoo()!=null){work.setGongSoo(dto.gongSoo());}
             return Header.OK();
         }catch (EntityNotFoundException e){
@@ -155,7 +162,7 @@ public class WorkService {
             Row row = sheet.createRow(rowIdx++);
 
             row.createCell(0).setCellValue(work.getMember().getName());
-            row.createCell(1).setCellValue(work.getCostType().getDescription());
+            row.createCell(1).setCellValue(work.getProject().getCostType().getDescription());
             row.createCell(2).setCellValue(work.getProject().getName());
             row.createCell(3).setCellValue(work.getProject().getStartDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
             row.createCell(4).setCellValue(work.getProject().getEndDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));

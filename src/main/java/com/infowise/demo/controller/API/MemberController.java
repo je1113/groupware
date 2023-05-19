@@ -6,6 +6,7 @@ import com.infowise.demo.dto.InfoWisePrincipal;
 import com.infowise.demo.dto.MemberDTO;
 import com.infowise.demo.rep.Session;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class MemberController {
     }
 
     @DeleteMapping("member/{idx}")
-    public Header delete(@PathVariable(name="idx")Long idx){
-        return memberService.delete(idx);
+    public ResponseEntity<Header> delete(@PathVariable(name="idx")Long idx){
+        return ResponseEntity.ok(memberService.delete(idx));
     }
 }

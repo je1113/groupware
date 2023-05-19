@@ -374,19 +374,20 @@ function pop_member_delete(idx){
 function member_delete(idx){
     fetch('/api/member/'+idx, {
         method: "DELETE",
-
     })
-        .then((res) => {
-            alert('삭제 완료')
-            location.reload();
-            return;
-        })
+        .then((res) => res.json())
         .then((data) => {
-            console.log(data);
+            if(data.resultCode ==="OK"){
+                location.reload();
+            }else{
+                alert(data.description)
+                location.reload();
+            }
             return;
         })
         .catch((err)=>{
-            alert(err);
+            alert("서버와 통신을 실패하였습니다." );
+            location.reload();
         })
 }
 function close_member_delete(){

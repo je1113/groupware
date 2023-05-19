@@ -27,17 +27,18 @@
             </attr>
         </attr>
         <attr sel=".pagination">
-            <attr sel="li[0]/a" th:text="'◀'"
-                  th:href="@{/(page=${members.number - 1}, searchKeyword=${param.searchKeyword})}"
-                  th:class="'page-link'+(${members.number}<=0 ? ' disabled' : '')"/>
-            <attr sel="li[1]" th:class="page-item" th:each="pageNumber : ${barNumbers}">
-                <attr sel="a" th:text="${pageNumber + 1}"
-                      th:href="@{/(page=${pageNumber}, searchKeyword=${param.searchKeyword})}"
-                      th:class="'page-link'+(${pageNumber}==${members.number} ? ' disabled' : '')"/>
+            <attr sel="li[0]" th:class="'paginate_button page-item previous'+(${members.number}<=0 ? ' disabled' : '')">
+                <attr sel="a" th:href="@{/member(page=${members.number - 1}, searchType=${param.searchType}, searchKeyword=${param.searchKeyword})}" />
             </attr>
-            <attr sel="li[2]/a" th:text="'▶'"
-                  th:href="@{/(page=${members.number + 1}, searchKeyword=${param.searchKeyword})}"
-                  th:class="'page-link'+(${members.number}>=${members.totalPages -1} ? ' disabled' : '')"/>
+            <attr sel="li[1]" th:class="'paginate_button page-item'+(${pageNumber} ==${members.number} ? ' disabled' : ' ')"
+                  th:each="pageNumber : ${barNumbers}">
+                <attr sel="a" th:text="${pageNumber + 1}"
+                      th:href="@{/member(page=${pageNumber}, searchType=${param.searchType}, searchKeyword=${param.searchKeyword})}"
+                />
+            </attr>
+            <attr sel="li[2]" th:class="'paginate_button page-item next'+(${members.number}>=${members.totalPages -1} ? ' disabled' : '')">
+                <attr sel="a" th:href="@{/member(page=${members.number + 1}, searchType=${param.searchType}, searchKeyword=${param.searchKeyword})}"/>
+            </attr>
         </attr>
     </attr>
 </thlogic>

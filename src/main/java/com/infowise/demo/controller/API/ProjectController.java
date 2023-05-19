@@ -6,6 +6,9 @@ import com.infowise.demo.dto.Header;
 import com.infowise.demo.dto.ProjectDTO;
 import com.infowise.demo.rep.ProjectRep;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,5 +35,8 @@ public class ProjectController {
     }
 
     @DeleteMapping("project/{idx}")
-    public Header delete(@PathVariable(name="idx")Long idx){return projectService.delete(idx);}
+    public ResponseEntity<Header> delete(@PathVariable(name="idx")Long idx){
+        Header response = projectService.delete(idx);
+        return ResponseEntity.ok(response);
+    }
 }
