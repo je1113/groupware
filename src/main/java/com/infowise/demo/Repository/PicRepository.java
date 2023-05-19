@@ -11,4 +11,5 @@ public interface PicRepository extends JpaRepository<Pic, Long> {
     List<Pic> findAllByMemberAndProject_IsUse(Member member,Boolean isUse);
     List<Pic> findAllByProject(Project project);
     Boolean existsByMemberAndProject(Member member, Project project);
+    Pic findByMemberAndProject(Member member, Project project);
 }

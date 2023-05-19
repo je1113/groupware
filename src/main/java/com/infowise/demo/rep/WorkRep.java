@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 public record WorkRep(
         Long idx,
         String memberName,
+        String memberEmail,
         String costType,
         Long projectIdx,
         String projectName,
@@ -21,7 +22,7 @@ public record WorkRep(
 
         period = dto.projectDTO().startDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"))
                 + " ~ " + dto.projectDTO().endDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
-        return new WorkRep(dto.idx(), dto.memberDTO().name(),
+        return new WorkRep(dto.idx(), dto.memberDTO().name(), dto.memberDTO().email(),
                 dto.costType().getDescription(),dto.projectDTO().idx(), dto.projectDTO().name(),
                 period, dto.year(), dto.month(), dto.week(), dto.gongSoo());
     }

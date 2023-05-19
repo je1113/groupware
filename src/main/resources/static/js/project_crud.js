@@ -190,6 +190,7 @@ function edit_btn_active(){
 document.querySelector('#name_edit_input').addEventListener('input', edit_btn_active)
 document.querySelector('#startDate_edit_input').addEventListener('change', edit_btn_active)
 document.querySelector('#endDate_edit_input').addEventListener('change', edit_btn_active )
+document.querySelector('#edit_input').addEventListener('change', edit_btn_active )
 
 
 // 조회👀👀👀👀👀👀👀👀
@@ -260,7 +261,6 @@ function pop_project_pic(project_idx){
         }
     })
     btn_pic.addEventListener('click',send_pic);
-
 }
 
 async function pic_list(project_idx){
@@ -298,9 +298,67 @@ async function pic_list(project_idx){
     }catch(error){
         console.log(error)
     }
+}
+async function getAuthenticatedUser() {
+  try {
+    const response = await fetch('api/auth');
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+async function plus_pic(project_idx){
+    const authenticatedUser = await getAuthenticatedUser();
 
+    fetch('api/pic', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                //우리가 만든데이터
+                "transaction_time":`${new Date()}`,
+                "resultCode":"ok",
+                "description":"정상",
+                "data":{
+                    "memberName":`${authenticatedUser.name}`,
+                    "projectIdx":`${project_idx}`
+                }
+            }),
+        })
+        .then((res) => {
+            location.reload()
+            return; //리턴을 걸어서 진행하는 것을 막는다!
+        })
+        .then((data) => {
+            console.log(data);
+            return;
+        })
+        .catch((err)=>{
+            alert(err);
+        })
 }
 
+function minus_pic(pic_idx){
+    // pic 화면에 찍어줄 수 있다면!!
+   fetch('api/pic/'+pic_idx, {
+           method: "DELETE",
+
+   })
+   .then((res) => {
+       location.reload()
+       return;
+   })
+   .then((data) => {
+       console.log(data);
+       return;
+   })
+   .catch((err)=>{
+       alert(err);
+   })
+
+}
 function close_project_pic(){
     document.querySelector(".layer_project_pic").style.display = "none";
     location.reload()

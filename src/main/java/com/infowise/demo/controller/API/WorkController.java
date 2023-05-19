@@ -3,13 +3,11 @@ package com.infowise.demo.controller.API;
 import com.infowise.demo.Service.MemberService;
 import com.infowise.demo.Service.PicService;
 import com.infowise.demo.Service.WorkService;
-import com.infowise.demo.dto.Header;
-import com.infowise.demo.dto.MemberDTO;
-import com.infowise.demo.dto.ProjectDTO;
-import com.infowise.demo.dto.WorkDTO;
+import com.infowise.demo.dto.*;
 import com.infowise.demo.rep.WorkRep;
 import com.infowise.demo.req.WorkReq;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +21,9 @@ public class WorkController {
     private final MemberService memberService;
     private final PicService picService;
     @PostMapping("work")
-    public List<Header<WorkDTO>> create(@RequestBody List<WorkReq> requests){
-        MemberDTO memberDTO = memberService.read(3L);
+    public List<Header<WorkDTO>> create(@RequestBody List<WorkReq> requests,
+                                        @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
+        MemberDTO memberDTO = memberService.read(infoWisePrincipal.idx());
         return workService.createBulk(requests,memberDTO);
     }
 
@@ -39,9 +38,9 @@ public class WorkController {
     }
 
     @PutMapping("work")
-    public List<Header<WorkDTO>> update(
-                                  @RequestBody List<WorkReq> request){
-        MemberDTO memberDTO = memberService.read(3L);
+    public List<Header<WorkDTO>> update(@RequestBody List<WorkReq> request,
+                                  @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
+        MemberDTO memberDTO = memberService.read(infoWisePrincipal.idx());
         return workService.updateBulk( request,memberDTO);
     }
 
@@ -54,8 +53,9 @@ public class WorkController {
     @GetMapping("work/{year}/{month}/{week}")
     public List<WorkDTO> check(@PathVariable(name="year")Integer year,
                                @PathVariable(name="month")Integer month,
-                               @PathVariable(name="week")Integer week
+                               @PathVariable(name="week")Integer week,
+                               @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal
                                ){
-        return workService.check(3L, year, month, week);
+        return workService.check(infoWisePrincipal.idx(), year, month, week);
     }
 }

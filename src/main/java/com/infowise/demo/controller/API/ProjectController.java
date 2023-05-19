@@ -33,5 +33,4 @@ public class ProjectController {
 
     @DeleteMapping("project/{idx}")
     public Header delete(@PathVariable(name="idx")Long idx){return projectService.delete(idx);}
-
 }

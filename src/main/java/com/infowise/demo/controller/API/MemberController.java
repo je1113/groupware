@@ -2,8 +2,11 @@ package com.infowise.demo.controller.API;
 
 import com.infowise.demo.Service.MemberService;
 import com.infowise.demo.dto.Header;
+import com.infowise.demo.dto.InfoWisePrincipal;
 import com.infowise.demo.dto.MemberDTO;
+import com.infowise.demo.rep.Session;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,6 +26,9 @@ public class MemberController {
     public MemberDTO read(@PathVariable(name="idx") Long idx){
         return memberService.read(idx);
     }
+
+    @GetMapping("auth")
+    public Session auth(@AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){return Session.fromDTO(infoWisePrincipal);}
 
     @PutMapping("member/{idx}")
     public Header<MemberDTO> update(@PathVariable(name="idx") Long idx,

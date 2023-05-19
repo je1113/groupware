@@ -1,4 +1,4 @@
-d<link rel="stylesheet" href="/src/styles/layer.css">
+d<link rel="stylesheet" href="/vendors/styles/layer.css">
 <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <html xmlns:th="http://www.thymeleaf.org">
@@ -21,11 +21,11 @@ d<link rel="stylesheet" href="/src/styles/layer.css">
                         <div class="input_item"><input type="text" autocomplete="off" class="input_txt" id="email_edit_input"></div>
                         <p class="input_error" id="email_edit_input_error"></p>
                     </div>
-                    <div class="input_box" id="pw_edit_input_box">
-                        <h4 class="input_title">비밀번호</h4>
-                        <div class="input_item"><input type="password" autocomplete="off" class="input_txt" id="pw_edit_input"></div>
-                        <p class="input_error" id="pw_edit_input_error"></p>
-                    </div>
+<!--                    <div class="input_box" id="pw_edit_input_box">-->
+<!--                        <h4 class="input_title">비밀번호</h4>-->
+<!--                        <div class="input_item"><input type="password" autocomplete="off" class="input_txt" id="pw_edit_input"></div>-->
+<!--                        <p class="input_error" id="pw_edit_input_error"></p>-->
+<!--                    </div>-->
 
                     <div class="input_box" id="name_edit_input_box">
                         <h4 class="input_title">이름</h4>
@@ -42,7 +42,13 @@ d<link rel="stylesheet" href="/src/styles/layer.css">
                         <div class="input_item"><input type="text" maxlength="13" oninput="autoHyphen(this)" autoclete="off" class="input_txt" id="hp_edit_input"></div>
                         <p class="input_error" id="hp_edit_input_error"></p>
                     </div>
-
+                    <div class="input_box" id="role_edit_input_box">
+                        <h4 class="input_title mb-10">권한</h4>
+                        <select class="custom-select col-12" id="role_edit_input">
+                            <option value="USER">User</option>
+                            <option value="MANAGER">Manager</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

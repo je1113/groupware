@@ -1,12 +1,12 @@
 <html lang="ko"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org/">
+      xmlns:th="http://www.thymeleaf.org/" >
 <!--head 시작 -->
 <div th:replace="fragment/admin_head :: head"></div>
 <!--head 끝 -->
 <body>
 <!-- header 시작 -->
-<div th:replace="fragment/admin_header :: header(${sessionInfo})"></div>
+<div th:replace="fragment/admin_header :: header"></div>
 <!-- header 끝 -->
 <!-- right-sidebar 시작 -->
 <div th:replace="fragment/admin_rightsidebar :: rightsidebar"></div>
@@ -22,7 +22,7 @@
       <div class="card-box mb-30">
         <div class="pd-20" id="top">
           <h4 class="text-blue h4">공수 리스트</h4>
-          <button type="button" class="btn btn-primary m-t-15 waves-effect" onclick="pop_work_date()">공수 등록</button>
+          <button type="button" id="create" class="btn btn-primary m-t-15 waves-effect" onclick="pop_work_date()">공수 등록</button>
           <!--번호/아이디/이름/전화번호/등록날짜-->
         </div>
         <div class="pb-20">
@@ -103,7 +103,7 @@
 <!--                <td class="month">4</td>-->
 <!--                <td class="week">1</td>-->
                 <td class="gong_soo">0.3</td>
-                <td>
+                <td id="manager">
                 <div class="dropdown">
                   <a
                           class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"

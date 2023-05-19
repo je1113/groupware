@@ -14,6 +14,7 @@ function send_create() {
     const name = document.getElementById('name_input');
     const team = document.getElementById('team_input');
     const hp = document.getElementById('hp_input');
+    const role = document.getElementById('role_input')
 
     fetch('/api/member', {
         method: 'POST',
@@ -28,7 +29,8 @@ function send_create() {
                 "pw":`${pw.value}`,
                 "name":`${name.value}`,
                 "team":`${team.value}`,
-                "hp":`${hp.value}`
+                "hp":`${hp.value}`,
+                "roleType": `${role.value}`
             }
         }),
     })
@@ -195,10 +197,11 @@ function pop_member_edit(idx){
     document.querySelector(".layer_member_edit").style.display = "block";
     //기존 정보를 가져오기 위해 idx를 통해 데이터를 불러온다.
     const edit_email =document.getElementById('email_edit_input')
-    const edit_pw =document.getElementById('pw_edit_input')
+//    const edit_pw =document.getElementById('pw_edit_input')
     const edit_name =document.getElementById('name_edit_input')
     const edit_team =document.getElementById('team_edit_input')
     const edit_hp =document.getElementById('hp_edit_input')
+    const edit_role =document.getElementById('role_edit_input')
     fetch('/api/member/'+idx)
         .then((response) => response.json())
         .then((data) => {
@@ -207,10 +210,16 @@ function pop_member_edit(idx){
             edit_name.value=data.name;
             edit_team.value=data.team;
             edit_hp.value=data.hp;
+            if(data.roleType === 'MANAGER'){
+                edit_role.options[1].selected = true
+            }else{
+                edit_role.options[0].selected = true
+            }
             strEmail=data.email
             strPw=data.pw
             strName=data.name
             strHp=data.hp
+
         })
     const btn_edit = document.querySelector('.btn_edit');
     btn_edit.addEventListener('click',editEvent);
@@ -224,10 +233,11 @@ function close_member_edit(){
 function send_edit(idx) {
     //request로 필요한 DOM 객체 선택
     const edit_email =document.getElementById('email_edit_input')
-    const edit_pw =document.getElementById('pw_edit_input')
+//    const edit_pw =document.getElementById('pw_edit_input')
     const edit_name =document.getElementById('name_edit_input')
     const edit_team =document.getElementById('team_edit_input')
     const edit_hp =document.getElementById('hp_edit_input')
+    const edit_role = document.getElementById('role_edit_input')
 
     fetch('/api/member/'+idx, {
         method: 'PUT',
@@ -239,10 +249,11 @@ function send_edit(idx) {
             "description":"정상",
             "data":{
                 "email" : edit_email.innerHTML,
-                "pw":`${edit_pw.value}`,
+//                "pw":`${edit_pw.value}`,
                 "name":`${edit_name.value}`,
                 "team":`${edit_team.value}`,
-                "hp":`${edit_hp.value}`
+                "hp":`${edit_hp.value}`,
+                "role": `${edit_role.value}`
             }
         }),
     })
@@ -275,19 +286,19 @@ document.querySelector('#email_edit_input').addEventListener('input', e=>{
 });
 
 // 비밀번호 유효성 검사
-document.querySelector('#pw_edit_input').addEventListener('input', e=>{
-    strPw=e.target.value;
-    let errorMsg='';
-    if(!validatePw(strPw)){
-        errorMsg='영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)';
-        document.querySelector('#pw_edit_input_box').className='has_button input_box has_error';
-        document.querySelector('#pw_edit_input').setAttribute('validateresult',false);
-    } else {
-        document.querySelector('#pw_edit_input_box').className='has_button input_box fill';
-        document.querySelector('#pw_edit_input').setAttribute('validateresult',true);
-    }
-    document.querySelector('#pw_edit_input_error').innerHTML=errorMsg;
-});
+//document.querySelector('#pw_edit_input').addEventListener('input', e=>{
+//    strPw=e.target.value;
+//    let errorMsg='';
+//    if(!validatePw(strPw)){
+//        errorMsg='영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)';
+//        document.querySelector('#pw_edit_input_box').className='has_button input_box has_error';
+//        document.querySelector('#pw_edit_input').setAttribute('validateresult',false);
+//    } else {
+//        document.querySelector('#pw_edit_input_box').className='has_button input_box fill';
+//        document.querySelector('#pw_edit_input').setAttribute('validateresult',true);
+//    }
+//    document.querySelector('#pw_edit_input_error').innerHTML=errorMsg;
+//});
 
 // 이름 유효성 검사
 document.querySelector('#name_edit_input').addEventListener('input', e=>{
@@ -322,7 +333,8 @@ document.querySelector('#hp_edit_input').addEventListener('input', e=>{
 // 버튼 활성화
 
 function edit_btn_active(){
-    if((validateEmail(strEmail))&&(validatePw(strPw))&&(validateHp(strHp))&&(validateName(strName))){
+//(validatePw(strPw))&&
+    if((validateEmail(strEmail))&&(validateHp(strHp))&&(validateName(strName))){
         $(".layer_member_edit .btn_edit").addClass("active");
         $(".layer_member_edit .btn_edit").removeClass("disabled")
     }else{
@@ -331,7 +343,7 @@ function edit_btn_active(){
     }
 }
 document.querySelector('#email_edit_input').addEventListener('input', edit_btn_active)
-document.querySelector('#pw_edit_input').addEventListener('input', edit_btn_active)
+//document.querySelector('#pw_edit_input').addEventListener('input', edit_btn_active)
 document.querySelector('#name_edit_input').addEventListener('input', edit_btn_active )
 document.querySelector('#hp_edit_input').addEventListener('input', edit_btn_active)
 
