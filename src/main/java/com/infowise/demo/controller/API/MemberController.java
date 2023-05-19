@@ -5,6 +5,7 @@ import com.infowise.demo.dto.Header;
 import com.infowise.demo.dto.InfoWisePrincipal;
 import com.infowise.demo.dto.MemberDTO;
 import com.infowise.demo.rep.Session;
+import com.infowise.demo.req.ChangePwReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,4 +42,12 @@ public class MemberController {
     public ResponseEntity<Header> delete(@PathVariable(name="idx")Long idx){
         return ResponseEntity.ok(memberService.delete(idx));
     }
+
+    @PostMapping("member/change-pw")
+    public ResponseEntity<Header> changePw(@RequestBody ChangePwReq req,
+                                           @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
+        System.out.println(req);
+        return ResponseEntity.ok(memberService.editPw(req,infoWisePrincipal.idx()));
+    }
 }
+

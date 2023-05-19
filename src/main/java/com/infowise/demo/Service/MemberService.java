@@ -8,7 +8,9 @@ import com.infowise.demo.Repository.MemberRepository;
 import com.infowise.demo.Repository.PicRepository;
 import com.infowise.demo.Repository.WorkRepository;
 import com.infowise.demo.dto.Header;
+import com.infowise.demo.dto.InfoWisePrincipal;
 import com.infowise.demo.dto.MemberDTO;
+import com.infowise.demo.req.ChangePwReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +110,21 @@ public class MemberService {
             log.warn("이메일 또는 비밀번호가 틀렸습니다.");
             return Header.ERROR("이메일 또는 비밀번호가 틀렸습니다.");
         }
+    }
+
+    public Header editPw(ChangePwReq req, Long idx){
+        Optional<Member> memberOptional = memberRepository.findById(idx);
+        if(memberOptional.isPresent()){
+            Member member = memberOptional.get();
+            if(member.getPw().equals("{noop}"+req.pw())){
+                member.setPw("{noop}"+req.pwNew());
+                return Header.OK();
+            }else{
+                return Header.ERROR("비밀번호가 틀렸습니다.");
+            }
+        }
+        return Header.ERROR("로그인한 유저가 없거나 세션이 만료되었습니다.");
+
     }
 
 }

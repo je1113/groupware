@@ -27,7 +27,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests(auth -> auth
-                        .antMatchers("/", "/project/**", "/member/**", "/work/**").authenticated() // 특정 URL 패턴에 대해서만 인증 요구
+                        .antMatchers("/", "/project/**", "/member/**", "/work/**", "/profile/**").authenticated() // 특정 URL 패턴에 대해서만 인증 요구
                         .anyRequest().permitAll() // 나머지 URL 패턴은 인증 요구하지 않음
                 )
                 .formLogin()

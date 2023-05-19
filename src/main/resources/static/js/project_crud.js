@@ -257,7 +257,6 @@ function pop_project_pic(project_idx){
     fetch('api/project/'+project_idx)
         .then((response) => response.json())
         .then((data) => {
-            console.log("project"+data)
             project_name.innerHTML = data.name;
             project_period.innerHTML = data.period;
             pic_list(project_idx)

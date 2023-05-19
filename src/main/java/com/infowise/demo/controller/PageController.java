@@ -52,7 +52,7 @@ public class PageController {
 
 
     @GetMapping(path="")
-    public String member(HttpServletRequest request, ModelMap map,
+    public String member(ModelMap map,
                          @PageableDefault(size = 10, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
                          @RequestParam(required = false) MemberSearchType searchType,
                          @RequestParam(required = false) String searchValue,
@@ -67,7 +67,7 @@ public class PageController {
     }
 
     @GetMapping("project")
-    public String project(HttpServletRequest request, ModelMap map,
+    public String project( ModelMap map,
                           @PageableDefault(size = 10, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
                           @RequestParam(required = false) ProjectSearchType searchType,
                           @RequestParam(required = false) String searchValue,
@@ -87,7 +87,7 @@ public class PageController {
     }
 
     @GetMapping("work")
-    public String work(HttpServletRequest request, ModelMap map,
+    public String work( ModelMap map,
                           @PageableDefault(size = 10, sort = {"year", "month", "week","member", "project"}, direction = Sort.Direction.DESC) Pageable pageable,
                           @RequestParam(required = false) WorkSearchType searchType,
                           @RequestParam(required = false) String searchValue,
@@ -103,7 +103,10 @@ public class PageController {
     }
 
     @GetMapping("profile")
-    public String profile(){
+    public String profile( ModelMap map,
+            @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
+        map.addAttribute("member", MemberDTO.of(null, infoWisePrincipal.email(),null,
+                infoWisePrincipal.name(),infoWisePrincipal.team(), infoWisePrincipal.hp(), null));
         return "profile";
     }
 }
