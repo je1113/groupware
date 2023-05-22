@@ -44,34 +44,6 @@
 		/>
 		<link rel="stylesheet" type="text/css" href="/vendors/styles/style.css" />
 
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script
-			async
-			src="https://www.googletagmanager.com/gtag/js?id=G-GBZ3SGGX85"
-		></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag() {
-				dataLayer.push(arguments);
-			}
-			gtag("js", new Date());
-
-			gtag("config", "G-GBZ3SGGX85");
-		</script>
-		<!-- Google Tag Manager -->
-		<script>
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || [];
-				w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-				var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s),
-					dl = l != "dataLayer" ? "&l=" + l : "";
-				j.async = true;
-				j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-				f.parentNode.insertBefore(j, f);
-			})(window, document, "script", "dataLayer", "GTM-NXZMQSS");
-		</script>
-		<!-- End Google Tag Manager -->
 	</head>
 	<body class="login-page">
 		<div class="login-header box-shadow">
@@ -132,6 +104,25 @@
 										></span>
 									</div>
 								</div>
+								<div class="row pb-30">
+									<div class="col-6">
+										<div class="custom-control custom-checkbox">
+<!--											<input-->
+<!--													type="checkbox"-->
+<!--													class="custom-control-input"-->
+<!--													id="customCheck1"-->
+<!--											/>-->
+<!--											<label class="custom-control-label" for="customCheck1"-->
+<!--											>Remember</label-->
+<!--											>-->
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="forgot-password">
+											<a href="forget">Forgot Password</a>
+										</div>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-sm-12">
 										<div class="input-group mb-0">
@@ -142,23 +133,14 @@
 										</div>
 									</div>
 								</div>
+
 							</form>
+
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-
 		<script src="/js/login.js"></script>
-		<!-- Google Tag Manager (noscript) -->
-		<noscript
-			><iframe
-				src="https://www.googletagmanager.com/ns.html?id=GTM-NXZMQSS"
-				height="0"
-				width="0"
-				style="display: none; visibility: hidden"
-			></iframe
-		></noscript>
 	</body>
 </html>

@@ -1,5 +1,6 @@
 package com.infowise.demo.controller.API;
 
+import com.infowise.demo.Service.EmailService;
 import com.infowise.demo.Service.MemberService;
 import com.infowise.demo.dto.Header;
 import com.infowise.demo.dto.InfoWisePrincipal;
@@ -9,6 +10,8 @@ import com.infowise.demo.req.ChangePwReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,6 +51,13 @@ public class MemberController {
                                            @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
         System.out.println(req);
         return ResponseEntity.ok(memberService.editPw(req,infoWisePrincipal.idx()));
+    }
+
+    @PostMapping("member/forgot-password")
+    public ResponseEntity<Header> processForgotPasswordForm(
+            @RequestBody MemberDTO memberDTO
+    ) {
+        return ResponseEntity.ok(memberService.resetPassword(memberDTO.email()));
     }
 }
 

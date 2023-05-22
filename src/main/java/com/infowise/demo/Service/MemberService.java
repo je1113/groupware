@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 
 @Slf4j
@@ -35,6 +36,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final WorkRepository workRepository;
     private final PicRepository picRepository;
+    private final EmailService emailService;
 
     // 리스트
     @Transactional(readOnly = true)
@@ -126,5 +128,32 @@ public class MemberService {
         return Header.ERROR("로그인한 유저가 없거나 세션이 만료되었습니다.");
 
     }
+    public String pwMaker(String email){
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder password = new StringBuilder();
 
+        Random random = new Random();
+        for (int i = 0; i < 8; i++) {
+            int index = random.nextInt(chars.length());
+            password.append(chars.charAt(index));
+        }
+
+        return password.toString();
+    }
+
+    public Header resetPassword(String email) {
+        Optional<Member> memberOptional = memberRepository.findByEmail(email);
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+            String newPassword = pwMaker(email);
+            member.setPw("{noop}"+newPassword);
+
+            // Send the new password to the member via email
+            String subject = "Your Password Has Been Reset";
+            String body = "Your new password is: " + newPassword;
+            emailService.sendEmail(email, subject, body);
+            return Header.OK();
+        }
+        return Header.ERROR("해당 이메일이 존재하지 않습니다.");
+    }
 }

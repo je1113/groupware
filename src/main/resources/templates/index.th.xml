@@ -14,7 +14,7 @@
         <attr sel=".datatable-nosort" sec:authorize="hasRole('MANAGER')"/>
         <attr sel="tbody" th:remove="all-but-first">
             <attr sel="tr[0]" th:each="member : ${members}">
-                <attr sel="td.idx" th:text="${member.idx}"/>
+<!--                <attr sel="td.idx" th:text="${member.idx}"/>-->
                 <attr sel="td.team" th:text="${member.team}"/>
                 <attr sel="td.name" th:text="${member.name}"/>
                 <attr sel="td.hp" th:text="${member.hp}"/>

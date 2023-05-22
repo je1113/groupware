@@ -109,4 +109,7 @@ public class PageController {
                 infoWisePrincipal.name(),infoWisePrincipal.team(), infoWisePrincipal.hp(), null));
         return "profile";
     }
+
+    @GetMapping("forget")
+    public String forget(){return "forget";}
 }
