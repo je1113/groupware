@@ -64,7 +64,6 @@ function send_it(){
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
         if(data.resultCode=="ERROR"){
              alert(data.description);
         }else{

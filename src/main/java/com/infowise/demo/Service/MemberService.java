@@ -148,9 +148,8 @@ public class MemberService {
             String newPassword = pwMaker(email);
             member.setPw("{noop}"+newPassword);
 
-            // Send the new password to the member via email
-            String subject = "Your Password Has Been Reset";
-            String body = "Your new password is: " + newPassword;
+            String subject = "[인포와이즈] 타임시트 비밀번호 변경";
+            String body = "새로운 비밀번호는 " + newPassword + " 입니다.";
             emailService.sendEmail(email, subject, body);
             return Header.OK();
         }

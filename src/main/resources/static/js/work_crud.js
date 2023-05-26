@@ -32,8 +32,6 @@ function check_work(){
     fetch('api/work/'+year+"/"+month+"/"+week)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
-            console.log(data.length);
             if(data.length === 0){
                 // 등록 모드
                 close_date()
@@ -65,7 +63,7 @@ async function pic_list(){
     try{
         const response = await fetch('api/pic/member');
         const data = await response.json();
-        console.log(data);
+
         if(data.length ===0){
             picList = `<p style="color:red; float: left;">아직 담당자가 등록되지 않았습니다.</p>`
             document.querySelector("#pic_list").innerHTML=picList
@@ -171,7 +169,7 @@ async function work_list(idx){
         try{
             const response = await fetch('api/work/week/'+idx);
             const data = await response.json();
-            console.log(data);
+
             if(data.length ===0){
                 pic_edit_list = `<p style="color:red; float: left;">데이터를 가져오는데 실패했습니다.</p>`
                 document.querySelector("#pic_edit_list").innerHTML=pic_edit_list
@@ -231,8 +229,6 @@ function edit_btn_active(){
 function edit_work(){
     const works = [];
     const inputs = document.querySelectorAll('.work_idx_edit_input,.project_idx_edit_input,.gong_soo_edit_input'); //.cost_type_edit_input,
-    console.log(year)
-    console.log(inputs)
     for(let i =0; i<inputs.length; i+=3){   //4
         const work_idx = inputs[i].value;
         const project_idx = inputs[i+1].value;
@@ -283,7 +279,7 @@ async function work_delete_list(idx){
     try{
         const response = await fetch('api/work/week/'+idx);
         const data = await response.json();
-        console.log(data);
+
         if(data.length ===0){
             pic_delete_list = `<p style="color:red; float: left;">데이터를 가져오는데 실패했습니다.</p>`
             document.querySelector("#pic_delete_list").innerHTML=pic_delete_list
@@ -316,7 +312,6 @@ function work_delete(idx){
 
         })
         .then((res) => {
-            console.log(res)
             location.reload()
             return;
         })
@@ -349,7 +344,6 @@ function work_all_delete(){
 
     })
     .then((res) => {
-        console.log(res)
         location.reload()
         return;
     })

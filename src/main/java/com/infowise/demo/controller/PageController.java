@@ -95,7 +95,6 @@ public class PageController {
         Page<WorkRep> works = workService.searchWork(searchType,searchValue,pageable, infoWisePrincipal).map(WorkRep::fromDTO);
         map.addAttribute("works", works);
         List<Integer> barNumbers = IntStream.range(0, works.getTotalPages()).boxed().toList();
-        System.out.println();
         map.addAttribute("barNumbers",barNumbers);
         if(infoWisePrincipal.roleType()==RoleType.MANAGER){ map.addAttribute("searchTypes", WorkSearchType.values());
         }else{map.addAttribute("searchTypes", WorkSearchType.PROJECT);}
@@ -112,4 +111,9 @@ public class PageController {
 
     @GetMapping("forget")
     public String forget(){return "forget";}
+
+    @GetMapping("seat")
+    public String seat(){
+        return "seat";
+    }
 }

@@ -20,7 +20,6 @@ public class ProjectController {
 
     @PostMapping("project")
     public Header<ProjectDTO> create(@RequestBody Header<ProjectDTO> request){
-        System.out.println(request+ "프로젝트 등록");
         return projectService.create(request.getData());
     }
 

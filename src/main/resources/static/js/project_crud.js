@@ -38,7 +38,6 @@ function send_create() {
             return; //리턴을 걸어서 진행하는 것을 막는다!
         })
         .then((data) => {
-            console.log(data);
             return;
         })
         .catch((err)=>{
@@ -157,7 +156,7 @@ function send_edit(idx) {
             return;
         })
         .then((data) => {
-            console.log(data);
+
             return;
         })
         .catch((err)=>{
@@ -277,7 +276,7 @@ async function pic_list(project_idx){
     try{
         const response = await fetch('api/pic/'+project_idx);
         const data = await response.json();
-        console.log(data);
+
         if(data.length ===0){
             picList = `<p style="color:red; float: left;">아직 담당자가 등록되지 않았습니다.</p>`
             document.querySelector("#pic_tbody").innerHTML=picList
@@ -302,7 +301,6 @@ async function pic_list(project_idx){
                 </tr>
             `
         })
-        console.log(picList)
         document.querySelector("#pic_tbody").innerHTML=picList
     }catch(error){
         console.log(error)
@@ -312,7 +310,7 @@ async function getAuthenticatedUser() {
   try {
     const response = await fetch('api/auth');
     const data = await response.json();
-    console.log(data);
+
     return data;
   } catch (error) {
     console.error(error);
@@ -341,7 +339,7 @@ async function plus_pic(project_idx){
             return; //리턴을 걸어서 진행하는 것을 막는다!
         })
         .then((data) => {
-            console.log(data);
+
             return;
         })
         .catch((err)=>{
@@ -360,7 +358,7 @@ function minus_pic(pic_idx){
        return;
    })
    .then((data) => {
-       console.log(data);
+
        return;
    })
    .catch((err)=>{
@@ -392,7 +390,7 @@ function pic_delete(idx){
             return;
         })
         .then((data) => {
-            console.log(data);
+
             return;
         })
         .catch((err)=>{
@@ -430,7 +428,7 @@ function send_pic() {
             return; //리턴을 걸어서 진행하는 것을 막는다!
         })
         .then((data) => {
-            console.log(data);
+
             return;
         })
         .catch((err)=>{

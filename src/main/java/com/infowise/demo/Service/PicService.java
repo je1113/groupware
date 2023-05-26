@@ -66,7 +66,6 @@ public class PicService {
                     picMemberNames.add(memberName);
                 }
         );
-        System.out.println("😊😊"+picMemberNames);
         return picMemberNames;
     }
 
@@ -114,7 +113,6 @@ public class PicService {
             picDTOList = null;
         }
 
-        System.out.println("pic리스트"+picDTOList);
         return picDTOList;
     }
 }

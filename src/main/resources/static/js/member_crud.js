@@ -40,7 +40,6 @@ function send_create() {
             return; //리턴을 걸어서 진행하는 것을 막는다!
         })
         .then((data) => {
-            console.log(data);
             return;
         })
         .catch((err)=>{
@@ -263,7 +262,6 @@ function send_edit(idx) {
             return;
         })
         .then((data) => {
-            console.log(data);
             return;
         })
         .catch((err)=>{
@@ -347,6 +345,7 @@ document.querySelector('#email_edit_input').addEventListener('input', edit_btn_a
 document.querySelector('#name_edit_input').addEventListener('input', edit_btn_active )
 document.querySelector('#hp_edit_input').addEventListener('input', edit_btn_active)
 document.querySelector('#role_edit_input').addEventListener('change', edit_btn_active)
+document.querySelector('#team_edit_input').addEventListener('change', edit_btn_active)
 
 
 ////관리자 조회👀👀👀👀👀👀👀👀
@@ -355,7 +354,6 @@ function pop_member_view(idx){
     fetch('/api/member/'+idx)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data)
         })
     document.querySelector(".layer_member_view").style.display = "block";
 }

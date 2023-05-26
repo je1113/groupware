@@ -23,7 +23,6 @@ public class MemberController {
 
     @PostMapping("member") //http://localhost:8989/api/member
     public Header<MemberDTO> create(@RequestBody Header<MemberDTO> request){
-        System.out.println(request+"직원 등록 😊");
         return memberService.create(request.getData());
     }
 
@@ -49,7 +48,6 @@ public class MemberController {
     @PostMapping("member/change-pw")
     public ResponseEntity<Header> changePw(@RequestBody ChangePwReq req,
                                            @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
-        System.out.println(req);
         return ResponseEntity.ok(memberService.editPw(req,infoWisePrincipal.idx()));
     }
 

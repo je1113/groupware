@@ -70,7 +70,6 @@ public class WorkController {
     @GetMapping("work/export")
     public ResponseEntity<ByteArrayResource> exportToExcel(HttpServletResponse response) {
         Workbook workbook = workService.generateExcelFile();
-        System.out.println(workbook);
         // 엑셀 파일을 바이트 배열로 변환
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {

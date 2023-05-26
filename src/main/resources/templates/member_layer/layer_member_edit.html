@@ -1,6 +1,3 @@
-d<link rel="stylesheet" href="/vendors/styles/layer.css">
-<script src="https://code.jquery.com/jquery-3.6.3.min.js"
-        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="member_edit" class="layer_member_edit layer lg" style="display: none;" >
     <div class="layer_container" style="height: auto">
@@ -32,15 +29,21 @@ d<link rel="stylesheet" href="/vendors/styles/layer.css">
                         <div class="input_item"><input type="text" autocomplete="off" class="input_txt" id="name_edit_input"></div>
                         <p class="input_error" id="name_edit_input_error"></p>
                     </div>
-                    <div class="input_box" id="team_edit_input_box">
-                        <h4 class="input_title">그룹</h4>
-                        <div class="input_item"><input type="text"  autocomplete="off" class="input_txt" id="team_edit_input"></div>
-                        <p class="input_error" id="team_edit_input_error"></p>
-                    </div>
                     <div class="input_box" id="hp_edit_input_box">
                         <h4 class="input_title">전화번호</h4>
                         <div class="input_item"><input type="text" maxlength="13" oninput="autoHyphen(this)" autoclete="off" class="input_txt" id="hp_edit_input"></div>
                         <p class="input_error" id="hp_edit_input_error"></p>
+                    </div>
+                    <div class="input_box" id="team_edit_input_box">
+                        <h4 class="input_title mb-10">그룹</h4>
+                        <select class="custom-select col-12" id="team_edit_input">
+                            <option value="데이터 컨설팅 그룹" selected>데이터 컨설팅 그룹</option>
+                            <option value="MDM 컨설팅 그룹">MDM 컨설팅 그룹</option>
+                            <option value="데이터서비스 그룹">데이터서비스 그룹</option>
+                            <option value="데이터 R&I 그룹">데이터 R&I 그룹</option>
+                            <option value="경영기획 그룹">경영기획 그룹</option>
+                            <option value="기반데이터 연구소">기반데이터 연구소</option>
+                        </select>
                     </div>
                     <div class="input_box" id="role_edit_input_box">
                         <h4 class="input_title mb-10">권한</h4>

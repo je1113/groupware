@@ -22,7 +22,6 @@ public class PicController {
     private final PicService picService;
     @PostMapping("pic")
     public Header<Pic> create(@RequestBody Header<PicReq> request){
-        System.out.println("PIC 등록");
         return picService.create(request.getData());
     }
 
