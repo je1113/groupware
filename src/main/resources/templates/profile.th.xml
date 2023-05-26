@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel=".name" th:text="${member.name}"/>
+    <attr sel=".profile-info">
+        <attr sel=".email" th:text="${member.email}"/>
+        <attr sel=".hp" th:text="${member.hp}"/>
+        <attr sel=".group" th:text="${member.team}"/>
+    </attr>
+</thlogic>

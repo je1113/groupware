@@ -82,14 +82,14 @@
             <thead>
             <tr>
 <!--              <th>Id</th>-->
-                <th>이름</th>
-                <th>구분</th>
-                <th>프로젝트명</th>
-                <th>프로젝트 기간</th>
-                <th>년도/월/주차</th>
+                <th class="col-1">이름</th>
+                <th class="col-1">구분</th>
+                <th class="col-5">프로젝트명</th>
+                <th>기간</th>
+                <th>년/월/주</th>
 <!--                <th>월</th>-->
 <!--                <th>주차</th>-->
-                <th>공수</th>
+                <th class="col-1">공수</th>
                 <th class="datatable-nosort">Action</th>
             </tr>
             </thead>
@@ -97,14 +97,13 @@
             <tr class="bg-pink">
                 <td class="member_name">김사과</td>
                 <td class="cost_type">pic</td>
-                <td class="project_name">사과 재배하기</td>
+                <td class="project_name col-5">사과 재배하기</td>
                 <td class="project_period">23/04~23/05</td>
                 <td class="year">2023</td>
 <!--                <td class="month">4</td>-->
 <!--                <td class="week">1</td>-->
-                <td class="gong_soo">0.3</td>
-                <td id="manager">
-                <div class="dropdown">
+                <td class="gong_soo col-1">0.3</td>
+                <td class="dropdown">
                   <a
                           class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
                           href="#"
@@ -123,38 +122,43 @@
                     ><i class="dw dw-delete-3"></i> 삭제</a
                     >
                   </div>
-                </div>
+                </td>
               </td>
             </tr>
             </tbody>
           </table>
-          <div class="row">
-            <div class="col-sm-12 col-md-4"><div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite"></div></div>
+          <div class="row pr-30">
+            <div class="col-sm-12 col-md-4"><div class="dataTables_info" role="status" aria-live="polite"></div></div>
             <div class="col-sm-12 col-md-7">
-              <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+              <div class="dataTables_paginate paging_simple_numbers" >
                 <ul class="pagination" id="pageNum">
-                  <li class="paginate_button page-item previous disabled" id="DataTables_Table_0_previous">
-                    <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0" class="page-link">
+                  <li class="paginate_button page-item previous" >
+                    <a href="#"  class="page-link">
                       <i class="ion-chevron-left"></i>
                     </a>
                   </li>
                   <li class="paginate_button page-item active">
-                    <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                    <a href="#"  class="page-link">1</a>
                   </li>
-                  <li class="paginate_button page-item next disabled" id="DataTables_Table_0_next">
-                    <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0" class="page-link">
+                  <li class="paginate_button page-item next" >
+                    <a href="#" class="page-link">
                       <i class="ion-chevron-right"></i>
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
+              <button class="btn btn-success buttons-excel buttons-html5" tabindex="0" aria-controls="DataTables_Table_2"  type="button"><span>Excel</span></button>
+
           </div>
         </div>
       </div>
     </div>
+      <div th:replace="fragment/footer :: footer"></div>
+
   </div>
 </div>
+
 <div th:replace="work_layer/layer_work_register"></div>
 <div th:replace="work_layer/layer_work_edit"></div>
 <div th:replace="work_layer/layer_work_delete_list"></div>

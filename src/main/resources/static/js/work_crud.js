@@ -32,8 +32,6 @@ function check_work(){
     fetch('api/work/'+year+"/"+month+"/"+week)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
-            console.log(data.length);
             if(data.length === 0){
                 // 등록 모드
                 close_date()
@@ -65,7 +63,7 @@ async function pic_list(){
     try{
         const response = await fetch('api/pic/member');
         const data = await response.json();
-        console.log(data);
+
         if(data.length ===0){
             picList = `<p style="color:red; float: left;">아직 담당자가 등록되지 않았습니다.</p>`
             document.querySelector("#pic_list").innerHTML=picList
@@ -76,13 +74,13 @@ async function pic_list(){
                 <div class="input_box" style="display: flex; align-items: center;">
                     <h4 class="input_title" style=" margin-right: 10px; width: 100%;">${pic.projectName}</h4>
                     <input type="hidden" class="project_idx_input" value="${pic.projectIdx}">
-                    <select class="cost_type_input custom-select">
-                        <option value="0">판관비</option>
-                        <option value="1">연구비</option>
-                        <option value="2">제조원가</option>
-                    </select>
-                    <input type="number" autocomplete="off" placeholder="공수를 입력해주세요" class="form-control gong_soo_input" >
+                    <input type="number" autocomplete="off" placeholder="공수를 입력해주세요" class="form-control gong_soo_input col-4" >
                 </div>`
+                //                    <select class="cost_type_input custom-select">
+                //                        <option value="0">판관비</option>
+                //                        <option value="1">연구비</option>
+                //                        <option value="2">제조원가</option>
+                //                    </select>
         })
         document.querySelector("#pic_list").innerHTML=picList
 
@@ -121,18 +119,18 @@ function save_btn_active(){
 
 function register_work(){
     const works = [];
-    const inputs = document.querySelectorAll('.project_idx_input,.cost_type_input,.gong_soo_input');
+    const inputs = document.querySelectorAll('.project_idx_input,.gong_soo_input'); //.cost_type_input,빠짐
 
 
-    for(let i =0; i<inputs.length; i+=3){
+    for(let i =0; i<inputs.length; i+=2){   //3
         const project_idx = inputs[i].value;
-        const cost_type = inputs[i+1].value;
-        const gong_soo = inputs[i+2].value;
+//        const cost_type = inputs[i+1].value;
+        const gong_soo = inputs[i+1].value;     //i+2
 
         const work = {
             "projectIdx": project_idx,
             "gongSoo": gong_soo,
-            "costType":cost_type,
+//            "costType":cost_type,
             "year":year,
             "month":month,
             "week":week
@@ -171,7 +169,7 @@ async function work_list(idx){
         try{
             const response = await fetch('api/work/week/'+idx);
             const data = await response.json();
-            console.log(data);
+
             if(data.length ===0){
                 pic_edit_list = `<p style="color:red; float: left;">데이터를 가져오는데 실패했습니다.</p>`
                 document.querySelector("#pic_edit_list").innerHTML=pic_edit_list
@@ -183,13 +181,13 @@ async function work_list(idx){
                         <h4 class="input_title" style=" margin-right: 10px; width: 100%;">${work.projectName}</h4>
                         <input type="hidden" class="work_idx_edit_input" value="${work.idx}">
                         <input type="hidden" class="project_idx_edit_input" value="${work.projectIdx}">
-                        <select class="cost_type_edit_input custom-select">
-                            <option value="0" ${work.costType == "판관비"? 'selected' :''}>판관비</option>
-                            <option value="1" ${work.costType == "연구비"? 'selected' :''}>연구비</option>
-                            <option value="2" ${work.costType == "제조원가"? 'selected' :''}>제조원가</option>
-                        </select>
-                        <input type="number" autocomplete="off" value="${work.gongSoo}" placeholder="공수를 입력해주세요" class="form-control gong_soo_edit_input" >
+                        <input type="number" autocomplete="off" value="${work.gongSoo}" placeholder="공수를 입력해주세요" class="form-control gong_soo_edit_input col-4" >
                     </div>`
+                    //                        <select class="cost_type_edit_input custom-select">
+                    //                            <option value="0" ${work.costType == "판관비"? 'selected' :''}>판관비</option>
+                    //                            <option value="1" ${work.costType == "연구비"? 'selected' :''}>연구비</option>
+                    //                            <option value="2" ${work.costType == "제조원가"? 'selected' :''}>제조원가</option>
+                    //                        </select>
             })
             document.querySelector("#pic_edit_list").innerHTML=pic_edit_list
             year =data[0].year
@@ -230,21 +228,19 @@ function edit_btn_active(){
 
 function edit_work(){
     const works = [];
-    const inputs = document.querySelectorAll('.work_idx_edit_input,.project_idx_edit_input,.cost_type_edit_input,.gong_soo_edit_input');
-    console.log(year)
-    console.log(inputs)
-    for(let i =0; i<inputs.length; i+=4){
+    const inputs = document.querySelectorAll('.work_idx_edit_input,.project_idx_edit_input,.gong_soo_edit_input'); //.cost_type_edit_input,
+    for(let i =0; i<inputs.length; i+=3){   //4
         const work_idx = inputs[i].value;
         const project_idx = inputs[i+1].value;
-        const cost_type = inputs[i+2].value;
-        const gong_soo = inputs[i+3].value;
+//        const cost_type = inputs[i+2].value;
+        const gong_soo = inputs[i+2].value;
 
 
         const work = {
             "idx": work_idx,
             "projectIdx": project_idx,
             "gongSoo": gong_soo,
-            "costType":cost_type,
+//            "costType":cost_type,
             "year":year,
             "month":month,
             "week":week
@@ -283,7 +279,7 @@ async function work_delete_list(idx){
     try{
         const response = await fetch('api/work/week/'+idx);
         const data = await response.json();
-        console.log(data);
+
         if(data.length ===0){
             pic_delete_list = `<p style="color:red; float: left;">데이터를 가져오는데 실패했습니다.</p>`
             document.querySelector("#pic_delete_list").innerHTML=pic_delete_list
@@ -294,7 +290,7 @@ async function work_delete_list(idx){
                 <div class="input_box" style="display: flex; align-items: center;">
                     <h4 class="input_title" style=" margin-right: 10px; width: 100%;">${work.projectName}</h4>
                     <input type="hidden" class="work_idx_delete_input" value="${work.idx}">
-                    <div class="input_title" style=" margin-right: 10px; width: 100%;">${work.gongSo}(${work.costType})</div>
+                    <h4 class="input_title col-3" style=" margin-right: 10px; width: 100%;">${work.gongSoo}</h4>
                     <div class="table-actions">
                         <a href="#" data-color="#e95959" onclick="work_delete(${work.idx})" style="color: rgb(233, 89, 89);">
                             <i class="icon-copy dw dw-delete-3"></i>
@@ -316,7 +312,6 @@ function work_delete(idx){
 
         })
         .then((res) => {
-            console.log(res)
             location.reload()
             return;
         })
@@ -349,11 +344,38 @@ function work_all_delete(){
 
     })
     .then((res) => {
-        console.log(res)
         location.reload()
         return;
     })
     .catch((err)=>{
         alert(err);
     })
+}
+
+//document.querySelector(".buttons-excel").addEventListener('click',downloadExcelFile)
+function downloadExcelFile() {
+  fetch("api/work/export", {
+    method: "GET",
+    responseType: "blob"
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.blob();
+      } else {
+        throw new Error("API 요청이 실패했습니다.");
+      }
+    })
+    .then(blob => {
+      // 응답으로 받은 Blob 데이터를 파일로 변환하여 다운로드
+      var url = window.URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = "work_data.xls";
+      link.click();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+      // 오류 처리 로직
+      console.error("다운로드 오류:", error);
+    });
 }

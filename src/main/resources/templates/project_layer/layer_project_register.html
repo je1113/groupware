@@ -16,6 +16,16 @@
         <div class="bottom">
             <div class="user_bind">
                 <div class="user_input">
+                    <div class="input_box">
+                        <h4 class="input_title mb-2">프로젝트 구분</h4>
+                        <div class="input_item">
+                            <select class="cost_type_input custom-select">
+                                <option value="0">판관비</option>
+                                <option value="1">연구비</option>
+                                <option value="2">제조원가</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="input_box" id="name_input_box">
                         <h4 class="input_title">프로젝트 이름</h4>
                         <div class="input_item"><input type="text" autocomplete="off" class="input_txt" id="name_input"></div>
@@ -33,6 +43,7 @@
                             <input type="datetime-local" placeholder="프로젝트 종료 날짜" id="endDate_input">
                         </div>
                     </div>
+
                     <br>
                     <div class="input_box">
                         <input type="checkbox" name="check" id="input0" class="check">

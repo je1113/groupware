@@ -1,0 +1,182 @@
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org/">
+<!--head 시작 -->
+<div th:replace="fragment/admin_head :: head"></div>
+<!--head 끝 -->
+<style>
+.flex{
+    display: flex;
+}
+
+.seat{
+    margin: 0.7rem;
+    border: 1px solid black;
+    width: 5rem;
+    height: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.section{
+    margin: 2rem;
+}
+
+.btm{
+    padding-left: 45rem
+}
+
+.boss{
+    margin-left:30%
+}
+.sss{
+    margin-bottom: 1.4rem;
+}
+@media (max-width: 800px) {
+  .seat{
+    margin: 0.35rem;
+    border: 1px solid black;
+    width: 2.5rem;
+    height: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    .section{
+        margin: 1rem;
+    }
+
+    .btm{
+        padding-left: 22rem
+    }
+
+    .boss{
+        margin-left:30%
+    }
+    .sss{
+        margin-bottom: 0.7rem;
+    }
+    .seat-txt{
+        font-size: 0.5rem;
+    }
+}
+</style>
+<body>
+<!-- header 시작 -->
+<div th:replace="fragment/admin_header :: header"></div>
+<!-- header 끝 -->
+<!-- right-sidebar 시작 -->
+<div th:replace="fragment/admin_rightsidebar :: rightsidebar"></div>
+<!-- right-sidebar 끝 -->
+<!-- left-side-bar 시작 -->
+<div th:replace="fragment/admin_navbar :: navbar"></div>
+<!-- left-side-bar 끝 -->
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="title">
+                            <h4>seating chart</h4>
+                        </div>
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <i class="icon-copy dw dw-user-12"></i>
+                                    출장인원: n명 | 내부인원: n명 | 총 인원: n명
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-md-6 col-sm-12 text-right">
+                        <!-- 오른쪽 버튼두는 곳-->
+                    </div>
+                </div>
+
+            </div>
+            <div class="pd-20 bg-white border-radius-4 box-shadow mb-30  seat_container">
+                <div class="flex">
+                    <div class="section">
+                        <div class="seat boss"><span class="seat-txt">11</span></div>
+                        <div class="flex">
+                            <div class="seat"><span class="seat-txt">21</span></div>
+                            <div class="seat"><span class="seat-txt">22</span></div>
+                        </div>
+                        <div class="flex">
+                            <div class="seat"><span class="seat-txt">31</span></div>
+                            <div class="seat"><span class="seat-txt">32</span></div>
+                        </div>
+                        <div class="flex">
+                            <div class="seat"><span class="seat-txt">41</span></div>
+                            <div class="seat"><span class="seat-txt">42</span></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="seat boss"><span class="seat-txt">12</span></div>
+                        <div class="flex">
+                            <div class="seat"><span class="seat-txt">23</span></div>
+                            <div class="seat"><span class="seat-txt">24</span></div>
+                        </div>
+                        <div class="flex">
+                            <div class="seat"><span class="seat-txt">33</span></div>
+                            <div class="seat"><span class="seat-txt">34</span></div>
+                        </div>
+                        <div class="flex">
+                            <div class="seat"><span class="seat-txt">43</span></div>
+                            <div class="seat"><span class="seat-txt">44</span></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="flex" style="margin-top:70px">
+                            <div class="seat"><span class="seat-txt">25</span></div>
+                            <div class="seat"><span class="seat-txt">26</span></div>
+                        </div>
+                        <div class="flex">
+                            <div class="seat"><span class="seat-txt">35</span></div>
+                            <div class="seat"><span class="seat-txt">36</span></div>
+                        </div>
+                        <div class="flex">
+                            <div class="seat"><span class="seat-txt">45</span></div>
+                            <div class="seat"><span class="seat-txt">46</span></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="seat sss"><span class="seat-txt">13</span></div>
+                        <div class="seat sss"><span class="seat-txt">27</span></div>
+                        <div class="seat sss"><span class="seat-txt">37</span></div>
+                        <div class="seat sss"><span class="seat-txt">47</span></div>
+                    </div>
+                </div>
+                <div class="section btm">
+                    <div class="flex">
+                        <div class="seat"><span class="seat-txt">51</span></div>
+                        <div class="seat"><span class="seat-txt">52</span></div>
+                    </div>
+                    <div class="flex">
+                        <div class="seat"><span class="seat-txt">61</span></div>
+                        <div class="seat"><span class="seat-txt">62</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragment/footer :: footer"></div>
+    </div>
+</div>
+
+
+
+<div th:replace="member_layer/layer_member_register"></div>
+<div th:replace="member_layer/layer_member_edit"></div>
+<div th:replace="member_layer/pop_member_delete"></div>
+<!-- js -->
+<div th:replace="fragment/admin_js :: js"></div>
+
+<script>
+
+
+</script>
+<!-- js -->
+
+</body>
+</html>

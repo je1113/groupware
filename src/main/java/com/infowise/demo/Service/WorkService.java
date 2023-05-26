@@ -3,31 +3,33 @@ package com.infowise.demo.Service;
 import com.infowise.demo.Entity.Member;
 import com.infowise.demo.Entity.Project;
 import com.infowise.demo.Entity.Work;
+import com.infowise.demo.Enum.RoleType;
 import com.infowise.demo.Enum.WorkSearchType;
 import com.infowise.demo.Repository.MemberRepository;
 import com.infowise.demo.Repository.ProjectRepository;
 import com.infowise.demo.Repository.WorkRepository;
-import com.infowise.demo.dto.Header;
-import com.infowise.demo.dto.MemberDTO;
-import com.infowise.demo.dto.ProjectDTO;
-import com.infowise.demo.dto.WorkDTO;
+import com.infowise.demo.dto.*;
 import com.infowise.demo.req.WorkReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional
@@ -47,14 +49,24 @@ public class WorkService {
     }
 
     @Transactional(readOnly = true)
-    public Page<WorkDTO> searchWork(WorkSearchType searchType, String searchKeyword, Pageable pageable){
-        if(searchKeyword == null|| searchKeyword.isBlank()) {
-            return workRepository.findAll(pageable).map(WorkDTO::fromEntity);
+    public Page<WorkDTO> searchWork(WorkSearchType searchType, String searchKeyword, Pageable pageable, InfoWisePrincipal infoWisePrincipal) {
+        if (infoWisePrincipal.roleType() == RoleType.MANAGER) {
+            if (searchKeyword == null || searchKeyword.isBlank()) {
+                return workRepository.findAll(pageable).map(WorkDTO::fromEntity);
+            }
+            return switch (searchType) {
+                case MEMBER -> workRepository.findByMemberNameContaining(searchKeyword, pageable).map(WorkDTO::fromEntity);
+                case PROJECT -> workRepository.findByProjectNameContaining(searchKeyword, pageable).map(WorkDTO::fromEntity);
+            };
+        }else{
+            Member member = memberRepository.findById(infoWisePrincipal.idx()).get();
+            if (searchKeyword == null || searchKeyword.isBlank()) {
+                return workRepository.findByMember(member,pageable).map(WorkDTO::fromEntity);
+            }else{
+                return workRepository.findByMemberAndProjectNameContaining(member,searchKeyword, pageable).map(WorkDTO::fromEntity);
+            }
+
         }
-        return switch (searchType){
-            case MEMBER -> workRepository.findByMemberNameContaining(searchKeyword,pageable).map(WorkDTO::fromEntity);
-            case PROJECT -> workRepository.findByProjectNameContaining(searchKeyword,pageable).map(WorkDTO::fromEntity);
-        };
     }
 
     @Transactional(readOnly = true)
@@ -88,7 +100,6 @@ public class WorkService {
     public Header<WorkDTO> update(Long idx, WorkDTO dto){
         try{
             Work work = workRepository.getReferenceById(dto.idx());
-            if(dto.costType()!=null){work.setCostType(dto.costType());}
             if(dto.gongSoo()!=null){work.setGongSoo(dto.gongSoo());}
             return Header.OK();
         }catch (EntityNotFoundException e){
@@ -124,5 +135,59 @@ public class WorkService {
         Member member = memberRepository.findById(memberIdx).get();
         return workRepository.findAllByMemberAndYearAndMonthAndWeek(member, year, month, week)
                 .stream().map(WorkDTO::fromEntity).toList();
+    }
+
+
+    // excel export
+    public Workbook generateExcelFile() {
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Work Data");
+
+        List<Work> works = workRepository.findAll(); // Work 데이터 조회 (예시로 가정)
+        DecimalFormat decimalFormat = new DecimalFormat("#.##"); //공수 소수2째 자리까지
+
+        int rowIdx = 0;
+        Row headerRow = sheet.createRow(rowIdx++);
+        headerRow.createCell(0).setCellValue("사용자 이름");
+        headerRow.createCell(1).setCellValue("원가 구분");
+        headerRow.createCell(2).setCellValue("프로젝트 이름");
+        headerRow.createCell(3).setCellValue("프로젝트 시작날짜");
+        headerRow.createCell(4).setCellValue("프로젝트 종료날짜");
+        headerRow.createCell(5).setCellValue("년도");
+        headerRow.createCell(6).setCellValue("월");
+        headerRow.createCell(7).setCellValue("주");
+        headerRow.createCell(8).setCellValue("공수");
+
+        for (Work work : works) {
+            Row row = sheet.createRow(rowIdx++);
+
+            row.createCell(0).setCellValue(work.getMember().getName());
+            row.createCell(1).setCellValue(work.getProject().getCostType().getDescription());
+            row.createCell(2).setCellValue(work.getProject().getName());
+            row.createCell(3).setCellValue(work.getProject().getStartDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+            row.createCell(4).setCellValue(work.getProject().getEndDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+            row.createCell(5).setCellValue(work.getYear());
+            row.createCell(6).setCellValue(work.getMonth());
+            row.createCell(7).setCellValue(work.getWeek());
+            row.createCell(8).setCellValue(Double.parseDouble(decimalFormat.format(work.getGongSoo())));
+        }
+
+        return workbook;
+    }
+
+    public List<Member> notWorkMember(){
+        LocalDate today = LocalDate.now();
+        List<Work> works = workRepository.findByYearAndMonthAndWeek
+                (today.getYear(),today.getMonthValue(),(int) Math.ceil((double) today.getDayOfMonth() /7)); // 제외할 멤버 리스트
+        Set<Member> excludedMembers = new HashSet<>();
+        for (Work work : works) {
+            excludedMembers.add(work.getMember());
+        }
+        List<Member> allMembers =memberRepository.findAll(); // 전체 멤버 리스트
+
+        List<Member> remainingMembers = allMembers.stream()
+                .filter(member -> !excludedMembers.contains(member))
+                .collect(Collectors.toList());
+        return remainingMembers;
     }
 }

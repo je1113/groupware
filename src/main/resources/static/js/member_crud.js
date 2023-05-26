@@ -40,7 +40,6 @@ function send_create() {
             return; //리턴을 걸어서 진행하는 것을 막는다!
         })
         .then((data) => {
-            console.log(data);
             return;
         })
         .catch((err)=>{
@@ -248,12 +247,12 @@ function send_edit(idx) {
             "resultCode":"ok",
             "description":"정상",
             "data":{
-                "email" : edit_email.innerHTML,
+                "email" : edit_email.value,
 //                "pw":`${edit_pw.value}`,
                 "name":`${edit_name.value}`,
                 "team":`${edit_team.value}`,
                 "hp":`${edit_hp.value}`,
-                "role": `${edit_role.value}`
+                "roleType": `${edit_role.value}`
             }
         }),
     })
@@ -263,7 +262,6 @@ function send_edit(idx) {
             return;
         })
         .then((data) => {
-            console.log(data);
             return;
         })
         .catch((err)=>{
@@ -346,6 +344,8 @@ document.querySelector('#email_edit_input').addEventListener('input', edit_btn_a
 //document.querySelector('#pw_edit_input').addEventListener('input', edit_btn_active)
 document.querySelector('#name_edit_input').addEventListener('input', edit_btn_active )
 document.querySelector('#hp_edit_input').addEventListener('input', edit_btn_active)
+document.querySelector('#role_edit_input').addEventListener('change', edit_btn_active)
+document.querySelector('#team_edit_input').addEventListener('change', edit_btn_active)
 
 
 ////관리자 조회👀👀👀👀👀👀👀👀
@@ -354,7 +354,6 @@ function pop_member_view(idx){
     fetch('/api/member/'+idx)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data)
         })
     document.querySelector(".layer_member_view").style.display = "block";
 }
@@ -373,19 +372,20 @@ function pop_member_delete(idx){
 function member_delete(idx){
     fetch('/api/member/'+idx, {
         method: "DELETE",
-
     })
-        .then((res) => {
-            alert('삭제 완료')
-            location.reload();
-            return;
-        })
+        .then((res) => res.json())
         .then((data) => {
-            console.log(data);
+            if(data.resultCode ==="OK"){
+                location.reload();
+            }else{
+                alert(data.description)
+                location.reload();
+            }
             return;
         })
         .catch((err)=>{
-            alert(err);
+            alert("서버와 통신을 실패하였습니다." );
+            location.reload();
         })
 }
 function close_member_delete(){

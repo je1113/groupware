@@ -7,9 +7,17 @@ import com.infowise.demo.dto.*;
 import com.infowise.demo.rep.WorkRep;
 import com.infowise.demo.req.WorkReq;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -57,5 +65,27 @@ public class WorkController {
                                @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal
                                ){
         return workService.check(infoWisePrincipal.idx(), year, month, week);
+    }
+
+    @GetMapping("work/export")
+    public ResponseEntity<ByteArrayResource> exportToExcel(HttpServletResponse response) {
+        Workbook workbook = workService.generateExcelFile();
+        // 엑셀 파일을 바이트 배열로 변환
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            workbook.write(baos);
+        } catch (IOException e) {
+            // 예외 처리 로직 작성
+        }
+
+        // 클라이언트로 엑셀 파일 전송
+        byte[] excelBytes = baos.toByteArray();
+        ByteArrayResource resource = new ByteArrayResource(excelBytes);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=work_data.xls")
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .contentLength(excelBytes.length)
+                .body(resource);
     }
 }

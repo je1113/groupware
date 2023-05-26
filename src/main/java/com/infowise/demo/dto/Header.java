@@ -40,4 +40,6 @@ public class Header<T> {
         return (Header<T>)Header.builder().transactionTime(LocalDateTime.now())
                 .resultCode("OK").description("정상").data(data).pagination(pagination).build();
     }
+
+
 }

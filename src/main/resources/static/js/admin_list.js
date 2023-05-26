@@ -6,7 +6,6 @@
         try {
             const response = await fetch(`/api/admin?page=${index}`);
             const data = await response.json();
-            console.log(data);
 
             let pagination = data.pagination;
             let totalPages = pagination.totalPages;

@@ -22,8 +22,6 @@ public class QWork extends EntityPathBase<Work> {
 
     public static final QWork work = new QWork("work");
 
-    public final EnumPath<com.infowise.demo.Enum.CostType> costType = createEnum("costType", com.infowise.demo.Enum.CostType.class);
-
     public final DatePath<java.time.LocalDate> date = createDate("date", java.time.LocalDate.class);
 
     public final NumberPath<Float> gongSoo = createNumber("gongSoo", Float.class);

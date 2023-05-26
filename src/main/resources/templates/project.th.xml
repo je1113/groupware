@@ -11,13 +11,14 @@
                   th:text = "${searchType.description}"
                   th:selected ="${param.searchType !=null && (param.searchType.toString == searchType.name)}"/>
         </attr>
+        <attr sel="th[0]" sec:authorize="hasRole('MANAGER')" />
         <attr sel="tbody" th:remove="all-but-first">
             <attr sel="tr[0]" th:each="project, i : ${projects}">
-<!--                <attr sel="td.idx" th:text="${project.idx}"/>-->
+                <attr sel="td.cost_type" th:text="${project.costType}" sec:authorize="hasRole('MANAGER')" />
                 <attr sel="td.name" th:text="${project.name}"/>
                 <attr sel="td.pic" th:text="${picNames[i.index]}"/>
-                <attr sel="td.start_date" th:datetime="${project.startDate}" th:text="${#temporals.format(project.startDate, 'yy/MM/dd')}"/>
-                <attr sel="td.end_date" th:datetime="${project.endDate}" th:text="${#temporals.format(project.endDate, 'yy/MM/dd')}"/>
+<!--                <attr sel="td.startDate" th:datetime="${project.startDate}" th:text="${#temporals.format(project.startDate, 'yy/MM/dd')}"/>-->
+                <attr sel="td.period" th:text="${project.period}"/>
                 <attr sel="td.is_use" th:text="${project.isUse}? 'Y':'N'"/>
                 <!-- View, Delete 부분 -->
                 <attr sel=".dropdown">
@@ -30,17 +31,18 @@
             </attr>
         </attr>
         <attr sel=".pagination">
-            <attr sel="li[0]/a" th:text="'◀'"
-                  th:href="@{/project(page=${projects.number - 1}, searchKeyword=${param.searchKeyword})}"
-                  th:class="'page-link'+(${projects.number}<=0 ? ' disabled' : '')"/>
-            <attr sel="li[1]" th:class="page-item" th:each="pageNumber : ${barNumbers}">
-                <attr sel="a" th:text="${pageNumber + 1}"
-                      th:href="@{/project(page=${pageNumber}, searchKeyword=${param.searchKeyword})}"
-                      th:class="'page-link'+(${pageNumber}==${projects.number} ? ' disabled' : '')"/>
+            <attr sel="li[0]" th:class="'paginate_button page-item previous'+(${projects.number}<=0 ? ' disabled' : '')">
+                <attr sel="a" th:href="@{/project(page=${projects.number - 1}, searchType=${param.searchType}, searchKeyword=${param.searchKeyword})}" />
             </attr>
-            <attr sel="li[2]/a" th:text="'▶'"
-                  th:href="@{/project(page=${projects.number + 1}, searchKeyword=${param.searchKeyword})}"
-                  th:class="'page-link'+(${projects.number}>=${projects.totalPages -1} ? ' disabled' : '')"/>
+            <attr sel="li[1]" th:class="'paginate_button page-item'+(${pageNumber} ==${projects.number} ? ' disabled' : ' ')"
+                  th:each="pageNumber : ${barNumbers}">
+                <attr sel="a" th:text="${pageNumber + 1}"
+                      th:href="@{/project(page=${pageNumber}, searchType=${param.searchType}, searchKeyword=${param.searchKeyword})}"
+                />
+            </attr>
+            <attr sel="li[2]" th:class="'paginate_button page-item next'+(${projects.number}>=${projects.totalPages -1} ? ' disabled' : '')">
+                <attr sel="a" th:href="@{/project(page=${projects.number + 1}, searchType=${param.searchType}, searchKeyword=${param.searchKeyword})}"/>
+            </attr>
         </attr>
     </attr>
 </thlogic>

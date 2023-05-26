@@ -19,6 +19,8 @@ public class QProject extends EntityPathBase<Project> {
 
     public static final QProject project = new QProject("project");
 
+    public final EnumPath<com.infowise.demo.Enum.CostType> costType = createEnum("costType", com.infowise.demo.Enum.CostType.class);
+
     public final DateTimePath<java.time.LocalDateTime> endDate = createDateTime("endDate", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> idx = createNumber("idx", Long.class);

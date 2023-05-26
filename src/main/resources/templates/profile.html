@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org/" >
+	<!--head 시작 -->
+	<div th:replace="fragment/admin_head :: head"></div>
+	<!--head 끝 -->
+	<body>
+	<!-- header 시작 -->
+	<div th:replace="fragment/admin_header :: header"></div>
+	<!-- header 끝 -->
+	<!-- right-sidebar 시작 -->
+	<div th:replace="fragment/admin_rightsidebar :: rightsidebar"></div>
+	<!-- right-sidebar 끝 -->
+	<!-- left-side-bar 시작 -->
+	<div th:replace="fragment/admin_navbar :: navbar"></div>
+	<!-- left-side-bar 끝 -->
+		<div class="main-container">
+			<div class="pd-ltr-20 xs-pd-20-10">
+				<div class="min-height-200px">
+					<div class="page-header">
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<div class="title">
+									<h4>Profile</h4>
+								</div>
+								<nav aria-label="breadcrumb" role="navigation">
+									<ol class="breadcrumb">
+										<li class="breadcrumb-item">
+											<a href="index.html">Home</a>
+										</li>
+										<li class="breadcrumb-item active" aria-current="page">
+											Profile
+										</li>
+									</ol>
+								</nav>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-30">
+							<div class="pd-20 card-box height-100-p">
+								<div class="profile-photo">
+									<a
+										href="modal"
+										data-toggle="modal"
+										data-target="#modal"
+										class="edit-avatar"
+										><i class="fa fa-pencil"></i
+									></a>
+									<img
+										src="vendors/images/profile.webp"
+										alt=""
+										class="avatar-photo"
+									/>
+								</div>
+								<h5 class="text-center h5 mb-0 name">전주은</h5>
+								<p class="text-center text-muted font-14">
+									인포와이즈
+								</p>
+								<div class="profile-info">
+									<h5 class="mb-20 h5 text-blue">Contact Information</h5>
+									<ul>
+										<li>
+											<span>Email Address:</span>
+											<p class="email">minzee@gmail.com</p>
+										</li>
+										<li>
+											<span>Phone Number:</span>
+											<p class="hp">010-1837-2849</p>
+										</li>
+										<li>
+											<span>Group:</span>
+											<p class="group">데이터 서비스</p>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-30">
+							<div class="card-box height-100-p overflow-hidden">
+								<div class="profile-tab height-100-p">
+									<div class="tab height-100-p">
+										<ul class="nav nav-tabs customtab" role="tablist">
+
+											<li class="nav-item">
+												<a
+													class="nav-link active"
+													data-toggle="tab"
+													href="#setting"
+													role="tab"
+												>new PW</a>
+											</li>
+<!--											<li class="nav-item">-->
+<!--												<a-->
+<!--														class="nav-link"-->
+<!--														data-toggle="tab"-->
+<!--														href="#new"-->
+<!--														role="tab"-->
+<!--												>새로운 기능</a>-->
+<!--											</li>-->
+										</ul>
+										<div class="tab-content">
+											<!-- Timeline Tab start -->
+
+											<!-- Tasks Tab start -->
+
+											<!-- Setting Tab start -->
+											<div
+												class="tab-pane fade show active height-100-p"
+												id="setting"
+												role="tabpanel"
+											>
+												<div class="profile-setting">
+													<ul class="profile-edit-list row">
+														<li class="weight-500 col-md-12">
+															<h4 class="text-blue h5 mb-20">
+																Edit Your Password
+															</h4>
+															<div class="form-group">
+																<label>기존 비밀번호</label>
+																<input
+																	class="form-control form-control-lg pw"
+																	type="password"
+																/>
+															</div>
+															<div class="form-group">
+																<label>변경할 비밀번호</label>
+																<input
+																		class="form-control form-control-lg pw_new1"
+																		type="password"
+																/>
+															</div>
+															<div class="form-group">
+																<label>변경할 비밀번호 확인</label>
+																<input
+																		class="form-control form-control-lg pw_new2"
+																		type="password"
+																/>
+															</div>
+
+															<div class="form-group mb-0">
+																<button	class="btn btn-primary edit-pw">Update Information</button>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+
+											<!-- Setting Tab End -->
+											<div
+													class="tab-pane fade height-100-p"
+													id="new"
+													role="tabpanel"
+											>
+												<div class="pd-20 profile-task-wrap">
+													<div class="container pd-0">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div th:replace="fragment/footer :: footer"></div>
+
+			</div>
+		</div>
+
+		<!-- js -->
+		<div th:replace="fragment/admin_js :: js"></div>
+		<script src="/js/profile.js"></script>
+
+	</body>
+</html>

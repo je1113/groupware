@@ -32,8 +32,8 @@ public record InfoWisePrincipal(
                                         String hp,
                                         RoleType roleType){
         Set<RoleType> roleTypes = Set.of(RoleType.USER);
-        String encodedPw = encodePassword(pw);
-        return new InfoWisePrincipal(idx, email, encodedPw, name, team, hp,
+//        String encodedPw = encodePassword(pw);
+        return new InfoWisePrincipal(idx, email, pw, name, team, hp,
                 roleTypes.stream().map(RoleType::getName)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toUnmodifiableSet()), roleType
@@ -47,8 +47,8 @@ public record InfoWisePrincipal(
                                             String hp,
                                             RoleType roleType){
         Set<RoleType> roleTypes = Set.of(RoleType.USER,RoleType.MANAGER);
-        String encodedPw = encodePassword(pw);
-        return new InfoWisePrincipal(idx, email, encodedPw, name, team, hp,
+//        String encodedPw = encodePassword(pw);
+        return new InfoWisePrincipal(idx, email, pw, name, team, hp,
                 roleTypes.stream().map(RoleType::getName)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toUnmodifiableSet()), roleType

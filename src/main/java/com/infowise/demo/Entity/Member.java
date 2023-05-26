@@ -18,7 +18,7 @@ import java.util.Collection;
 @ToString(callSuper = true)
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long idx;
-    private String email;
+    @Setter private String email;
     @Setter private String pw;
     @Setter private String name;
     @Setter private String team;

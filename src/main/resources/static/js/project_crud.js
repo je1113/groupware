@@ -13,6 +13,7 @@ function send_create() {
     const startDate = document.getElementById('startDate_input');
     const endDate = document.getElementById('endDate_input');
     const input0 = document.getElementById('input0');
+    const costType = document.querySelector('.cost_type_input')
 
     fetch('api/project', {
         method: 'POST',
@@ -26,7 +27,8 @@ function send_create() {
                 "name":`${name.value}`,
                 "startDate":`${startDate.value}`,
                 "endDate":`${endDate.value}`,
-                "isUse":`${input0.checked}`
+                "isUse":`${input0.checked}`,
+                "costType":`${costType.value}`
             }
         }),
     })
@@ -36,7 +38,6 @@ function send_create() {
             return; //리턴을 걸어서 진행하는 것을 막는다!
         })
         .then((data) => {
-            console.log(data);
             return;
         })
         .catch((err)=>{
@@ -45,7 +46,7 @@ function send_create() {
 }
 // 프로젝트 이름 정규 표현식
 function validateName(strName){
-    const reg_name = /^[0-9a-zA-Z가-힣_\s]+$/g;
+    const reg_name = /^[a-zA-Z0-9가-힣|\s!#$%&()*+,-./:;<=>?@[\]^_`{|}~]+$/g;
     if(!reg_name.test(''+strName)){
         return false;
     }
@@ -97,6 +98,7 @@ function pop_project_edit(idx){
     const edit_startDate = document.getElementById('startDate_edit_input');
     const edit_endDate = document.getElementById('endDate_edit_input');
     const edit_input = document.getElementById('edit_input');
+    const edit_costType = document.querySelector(".cost_type_edit_input")
     fetch('api/project/'+idx)
         .then((response) => response.json())
         .then((data) => {
@@ -108,6 +110,9 @@ function pop_project_edit(idx){
             }else{
                 edit_input.checked = false
             }
+            edit_costType.innerHTML=`<option value="0" ${data.costType == "판관비"? 'selected' :''}>판관비</option>
+                                     <option value="1" ${data.costType == "연구비"? 'selected' :''}>연구비</option>
+                                     <option value="2" ${data.costType == "제조원가"? 'selected' :''}>제조원가</option>`
         })
     const btn_edit = document.querySelector('.btn_edit');
     btn_edit.addEventListener('click',edit_event);
@@ -126,6 +131,7 @@ function send_edit(idx) {
     const edit_startDate = document.getElementById('startDate_edit_input');
     const edit_endDate = document.getElementById('endDate_edit_input');
     const edit_input = document.getElementById('edit_input');
+    const edit_costType = document.querySelector(".cost_type_edit_input")
 
     fetch('api/project/'+idx, {
         method: 'PUT',
@@ -139,7 +145,8 @@ function send_edit(idx) {
                 "name" : `${edit_name.value}`,
                 "startDate":`${edit_startDate.value}`,
                 "endDate":`${edit_endDate.value}`,
-                "isUse":`${edit_input.checked}`
+                "isUse":`${edit_input.checked}`,
+                "costType":`${edit_costType.value}`
             }
         }),
     })
@@ -149,7 +156,7 @@ function send_edit(idx) {
             return;
         })
         .then((data) => {
-            console.log(data);
+
             return;
         })
         .catch((err)=>{
@@ -191,6 +198,8 @@ document.querySelector('#name_edit_input').addEventListener('input', edit_btn_ac
 document.querySelector('#startDate_edit_input').addEventListener('change', edit_btn_active)
 document.querySelector('#endDate_edit_input').addEventListener('change', edit_btn_active )
 document.querySelector('#edit_input').addEventListener('change', edit_btn_active )
+document.querySelector('.cost_type_edit_input').addEventListener('change', edit_btn_active )
+
 
 
 // 조회👀👀👀👀👀👀👀👀
@@ -218,19 +227,19 @@ function pop_project_delete(idx){
 function project_delete(idx){
     fetch('/api/project/'+idx, {
         method: "DELETE",
-
     })
-        .then((res) => {
-            alert('삭제 완료')
-            location.reload();
-            return;
-        })
+        .then((res) => res.json())
         .then((data) => {
-            console.log(data);
+            if(data.resultCode ==="OK"){
+                location.reload();
+            }else{
+                alert(data.description)
+            }
             return;
         })
         .catch((err)=>{
-            alert(err);
+            alert("서버와 통신을 실패하였습니다." );
+            location.reload();
         })
 }
 function close_project_delete(){
@@ -247,7 +256,6 @@ function pop_project_pic(project_idx){
     fetch('api/project/'+project_idx)
         .then((response) => response.json())
         .then((data) => {
-            console.log("project"+data)
             project_name.innerHTML = data.name;
             project_period.innerHTML = data.period;
             pic_list(project_idx)
@@ -268,7 +276,7 @@ async function pic_list(project_idx){
     try{
         const response = await fetch('api/pic/'+project_idx);
         const data = await response.json();
-        console.log(data);
+
         if(data.length ===0){
             picList = `<p style="color:red; float: left;">아직 담당자가 등록되지 않았습니다.</p>`
             document.querySelector("#pic_tbody").innerHTML=picList
@@ -293,7 +301,6 @@ async function pic_list(project_idx){
                 </tr>
             `
         })
-        console.log(picList)
         document.querySelector("#pic_tbody").innerHTML=picList
     }catch(error){
         console.log(error)
@@ -303,7 +310,7 @@ async function getAuthenticatedUser() {
   try {
     const response = await fetch('api/auth');
     const data = await response.json();
-    console.log(data);
+
     return data;
   } catch (error) {
     console.error(error);
@@ -332,7 +339,7 @@ async function plus_pic(project_idx){
             return; //리턴을 걸어서 진행하는 것을 막는다!
         })
         .then((data) => {
-            console.log(data);
+
             return;
         })
         .catch((err)=>{
@@ -351,7 +358,7 @@ function minus_pic(pic_idx){
        return;
    })
    .then((data) => {
-       console.log(data);
+
        return;
    })
    .catch((err)=>{
@@ -383,7 +390,7 @@ function pic_delete(idx){
             return;
         })
         .then((data) => {
-            console.log(data);
+
             return;
         })
         .catch((err)=>{
@@ -421,7 +428,7 @@ function send_pic() {
             return; //리턴을 걸어서 진행하는 것을 막는다!
         })
         .then((data) => {
-            console.log(data);
+
             return;
         })
         .catch((err)=>{

@@ -1,12 +1,17 @@
 package com.infowise.demo.controller.API;
 
+import com.infowise.demo.Service.EmailService;
 import com.infowise.demo.Service.MemberService;
 import com.infowise.demo.dto.Header;
 import com.infowise.demo.dto.InfoWisePrincipal;
 import com.infowise.demo.dto.MemberDTO;
 import com.infowise.demo.rep.Session;
+import com.infowise.demo.req.ChangePwReq;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +23,6 @@ public class MemberController {
 
     @PostMapping("member") //http://localhost:8989/api/member
     public Header<MemberDTO> create(@RequestBody Header<MemberDTO> request){
-        System.out.println(request+"직원 등록 😊");
         return memberService.create(request.getData());
     }
 
@@ -37,7 +41,21 @@ public class MemberController {
     }
 
     @DeleteMapping("member/{idx}")
-    public Header delete(@PathVariable(name="idx")Long idx){
-        return memberService.delete(idx);
+    public ResponseEntity<Header> delete(@PathVariable(name="idx")Long idx){
+        return ResponseEntity.ok(memberService.delete(idx));
+    }
+
+    @PostMapping("member/change-pw")
+    public ResponseEntity<Header> changePw(@RequestBody ChangePwReq req,
+                                           @AuthenticationPrincipal InfoWisePrincipal infoWisePrincipal){
+        return ResponseEntity.ok(memberService.editPw(req,infoWisePrincipal.idx()));
+    }
+
+    @PostMapping("member/forgot-password")
+    public ResponseEntity<Header> processForgotPasswordForm(
+            @RequestBody MemberDTO memberDTO
+    ) {
+        return ResponseEntity.ok(memberService.resetPassword(memberDTO.email()));
     }
 }
+

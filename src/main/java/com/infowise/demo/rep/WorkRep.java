@@ -19,11 +19,14 @@ public record WorkRep(
 ) {
     public static WorkRep fromDTO(WorkDTO dto){
         String period;
-
+        String costTypeString;
+        if(dto.projectDTO().costType()==null) {
+            costTypeString = " ";
+        }else{ costTypeString = dto.projectDTO().costType().getDescription();}
         period = dto.projectDTO().startDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"))
                 + " ~ " + dto.projectDTO().endDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
         return new WorkRep(dto.idx(), dto.memberDTO().name(), dto.memberDTO().email(),
-                dto.costType().getDescription(),dto.projectDTO().idx(), dto.projectDTO().name(),
+                costTypeString,dto.projectDTO().idx(), dto.projectDTO().name(),
                 period, dto.year(), dto.month(), dto.week(), dto.gongSoo());
     }
 }
